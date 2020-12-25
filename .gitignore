@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+/cmake-build-debug/
+/src/cmake-build-debug/
+.idea/.name
+.idea/misc.xml
+*.iml
+*.xml
