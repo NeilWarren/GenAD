@@ -4,10 +4,11 @@
 int main() {
 
 	std::cout << "Hello, World!" << std::endl;
-	std::string input = "x1+exp(x0)";
+	std::string input = "(x0+x1)/exp(x2)";
 	map<std::string, double> inits;
 	inits["x0"] = 1.0;
-	inits["x1"] = 2.0;
+	inits["x1"] = 1.0;
+	inits["x2"] = 2.0;
 
    std::vector<token> token_list = parser(input, inits).token_list;
 
