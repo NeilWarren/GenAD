@@ -17,22 +17,15 @@ std::pair<double, int> parser::decimal_reader(std::string input, int input_dista
     stack<char> const_stack;
     int i=0;
     bool track_dots = false;
-
-    //std::cout << "decimal reader call" << std::endl;
-
     auto cstr_it = input.cbegin() + input_distance;
-
-    //std::cout << "first number read: " << *cstr_it << std::endl;
 
     while (isdigit((int)*cstr_it) != 0 || *cstr_it == '.') {
         if (*cstr_it == '.') {
             track_dots = true;
         }
-
         const_stack.push(*cstr_it);
         ++cstr_it;
         ++input_distance;
-        //std::cout << "decimal reading distance: " << input_distance << std::endl;
     }
 
     while (!const_stack.empty()) {
@@ -55,22 +48,13 @@ std::vector<token> parser::tokenizer(std::string input) {
 
     vector<token> token_list;
     stack<char> const_stack;
-    
-    // will store constants here as we loop through
     double const_val = 0;
 
     auto cstr_it = input.begin();
 
     while(cstr_it != input.end()) {
-
-        //std::cout << "current value: " << *cstr_it << std::endl;
-
         if (is_in_array(*cstr_it, functions_char, function_length)) {
-            //std::cout << "function condition" << std::endl;
-
-
             token t = token(*cstr_it, token::func);
-
             std::string f;
 
             while (*cstr_it != '(') {
@@ -84,24 +68,14 @@ std::vector<token> parser::tokenizer(std::string input) {
             }    
 
         } else if (is_in_array(*cstr_it, variables, variables_length)) {
-            //std::cout << "variable condition" << std::endl;
-
-            std::pair<float, int> reader = decimal_reader(input, (int)std::distance(input.begin(), cstr_it) + 1);
-            //std::cout << "amount: " << reader.second << std::endl;
-            //std::cout << "value read: " <<reader.first << std::endl;
-            //std::cout << (int)std::distance(input.begin(), cstr_it) << std::endl;
+            std::pair<double, int> reader = decimal_reader(input, (int)std::distance(input.begin(), cstr_it) + 1);
             std::string sub_string = input.substr((int)std::distance(input.begin(), cstr_it) , reader.second);
-            //std::cout << "variable name: " <<sub_string << std::endl;
             token t = token(*cstr_it, token::var, 0.0, this->initial_values[sub_string]);
             t.set_var_name(sub_string);
             token_list.push_back(t);
             cstr_it = input.begin() + reader.second;
-            
 
         } else if (is_in_array(*cstr_it, operators, operators_length)) {
-            //std::cout << "operator condition" << std::endl;
-
-            
             bool add_mul = false;
 
             if (*cstr_it == '-' && (token_list.empty() || 
@@ -135,8 +109,6 @@ std::vector<token> parser::tokenizer(std::string input) {
             }
         }
         else if (isdigit((int)*cstr_it) != 0 || (*cstr_it == '.' && isdigit((int)*(cstr_it+1)))) {
-            //std::cout << "numerical condition" << std::endl;
-
             const_val = decimal_reader(input, (int)std::distance(input.begin(), cstr_it)).first;
             cstr_it = input.begin() + decimal_reader(input, (int)std::distance(input.begin(), cstr_it)).second;
 
@@ -144,8 +116,6 @@ std::vector<token> parser::tokenizer(std::string input) {
             token_list.push_back(t);
         }
         else {
-            //std::cout << "error condition" << std::endl;
-            // error handling
             std::string msg = "unable to parse input character: ";
             msg += *cstr_it;
             throw std::invalid_argument(msg);
