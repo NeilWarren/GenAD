@@ -4,7 +4,7 @@
 
 #include <utility>
 
-#include "sys.h"
+#include "../sys.h"
 using namespace std;
 
 class Token {

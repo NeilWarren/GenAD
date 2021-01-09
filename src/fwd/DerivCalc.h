@@ -1,7 +1,7 @@
 #ifndef FINALPROJECT_TRACE_DERIVCALC_H
 #define FINALPROJECT_TRACE_DERIVCALC_H
 
-#include "auto_diff.h"
+#include "../auto_diff.h"
 
 class DerivCalc {
 

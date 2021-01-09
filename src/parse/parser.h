@@ -1,8 +1,8 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#include "sys.h"
-#include "Token.h"
+#include "../sys.h"
+#include "../token/Token.h"
 
 using namespace std;
 

@@ -1,7 +1,7 @@
 #ifndef MISHRA_WARREN_AUTODIFF_AUTODIFFFWD_H
 #define MISHRA_WARREN_AUTODIFF_AUTODIFFFWD_H
 
-#include "auto_diff.h"
+#include "../auto_diff.h"
 
 using namespace std;
 
