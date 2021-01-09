@@ -69,7 +69,8 @@ std::vector<Token> parser::tokenizer(std::string input) {
 
         } else if (is_in_array(*cstr_it, variables, variables_length)) {
             std::pair<double, int> reader = decimal_reader(input, (int)std::distance(input.begin(), cstr_it) + 1);
-            std::string sub_string = input.substr((int)std::distance(input.begin(), cstr_it) , reader.second);
+            int start_index = (int)std::distance(input.begin(), cstr_it);
+            std::string sub_string = input.substr(start_index, reader.second - start_index);
             Token t = Token(*cstr_it, var, 0.0, this->initial_values[sub_string]);
             t.set_var_name(sub_string);
             token_list.push_back(t);
