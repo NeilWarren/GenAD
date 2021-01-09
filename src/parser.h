@@ -2,7 +2,7 @@
 #define PARSER_H
 
 #include "sys.h"
-#include "token.h"
+#include "Token.h"
 
 using namespace std;
 
@@ -36,14 +36,14 @@ public:
     char variables[10] = {'w', 'x', 'y', 'z', 'k', 'm', 'd', 'v', 'u', 'o'};
     const int variables_length = 10;
 
-    vector<token> token_list;
+    vector<Token> token_list;
     map<std::string, double> initial_values;
 
     parser(std::string s, map<std::string, double> inits);
     
     static bool is_in_array(char p, char* array, int length);
-    std::vector<token> tokenizer(std::string string); 
-    std::vector<token> parse(std::vector<token> input);
+    std::vector<Token> tokenizer(std::string string);
+    std::vector<Token> parse(std::vector<Token> input);
     void dynamic_log_handler(std::string input);
     std::pair<double, int> decimal_reader(std::string input, int input_distance);
 };

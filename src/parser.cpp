@@ -42,11 +42,11 @@ std::pair<double, int> parser::decimal_reader(std::string input, int input_dista
     return std::pair<double, int>(const_val, input_distance);
 }
 
-std::vector<token> parser::tokenizer(std::string input) {
+std::vector<Token> parser::tokenizer(std::string input) {
 
     remove(input.begin(), input.end(),' ');
 
-    vector<token> token_list;
+    vector<Token> token_list;
     stack<char> const_stack;
     double const_val = 0;
 
@@ -54,7 +54,7 @@ std::vector<token> parser::tokenizer(std::string input) {
 
     while(cstr_it != input.end()) {
         if (is_in_array(*cstr_it, functions_char, function_length)) {
-            token t = token(*cstr_it, token::func);
+            Token t = Token(*cstr_it, func);
             std::string f;
 
             while (*cstr_it != '(') {
@@ -70,7 +70,7 @@ std::vector<token> parser::tokenizer(std::string input) {
         } else if (is_in_array(*cstr_it, variables, variables_length)) {
             std::pair<double, int> reader = decimal_reader(input, (int)std::distance(input.begin(), cstr_it) + 1);
             std::string sub_string = input.substr((int)std::distance(input.begin(), cstr_it) , reader.second);
-            token t = token(*cstr_it, token::var, 0.0, this->initial_values[sub_string]);
+            Token t = Token(*cstr_it, var, 0.0, this->initial_values[sub_string]);
             t.set_var_name(sub_string);
             token_list.push_back(t);
             cstr_it = input.begin() + reader.second;
@@ -93,17 +93,17 @@ std::vector<token> parser::tokenizer(std::string input) {
                 }
 
                 if (!add_mul) {
-                    token t = token('C', token::constant, 0, -const_val);
+                    Token t = Token('C', constant, 0, -const_val);
                     token_list.push_back(t);
                 } else {
-                    token t = token('C', token::constant, 0, -const_val);
+                    Token t = Token('C', constant, 0, -const_val);
                     token_list.push_back(t);
-                    token_list.push_back(token('*', token::binary_op, precedence['*']));
+                    token_list.push_back(Token('*', binary_op, precedence['*']));
                 } 
 
             } else {
 
-                token t = token(*cstr_it, token::binary_op, 0, precedence[*cstr_it]);
+                Token t = Token(*cstr_it, binary_op, 0, precedence[*cstr_it]);
                 token_list.push_back(t);
                 cstr_it++;
             }
@@ -112,7 +112,7 @@ std::vector<token> parser::tokenizer(std::string input) {
             const_val = decimal_reader(input, (int)std::distance(input.begin(), cstr_it)).first;
             cstr_it = input.begin() + decimal_reader(input, (int)std::distance(input.begin(), cstr_it)).second;
 
-            token t = token('C', token::constant, 0, const_val);
+            Token t = Token('C', constant, 0, const_val);
             token_list.push_back(t);
         }
         else {
@@ -126,18 +126,18 @@ std::vector<token> parser::tokenizer(std::string input) {
 }
 
 
-std::vector<token> parser::parse(std::vector<token> input) {
+std::vector<Token> parser::parse(std::vector<Token> input) {
 
-    std::vector<token> output;
+    std::vector<Token> output;
 
-    std::stack<token> op_stack;
+    std::stack<Token> op_stack;
 
     for (auto & token_it : input) {
-        if (token_it.type == token::var || token_it.type == token::constant) {
+        if (token_it.type == var || token_it.type == constant) {
             output.push_back(token_it);
-        } else if (token_it.type == token::func) {
+        } else if (token_it.type == func) {
             op_stack.push(token_it);
-        } else if (token_it.type == token::binary_op && token_it.first_char!= '(' && token_it.first_char != ')') {
+        } else if (token_it.type == binary_op && token_it.first_char != '(' && token_it.first_char != ')') {
             while (!op_stack.empty() && op_stack.top().first_char != '(' &&
                 (op_stack.top().precedence > token_it.precedence || 
                 (op_stack.top().precedence == token_it.precedence && token_it.first_char != '^'))) {
@@ -155,7 +155,7 @@ std::vector<token> parser::parse(std::vector<token> input) {
             }
             if (!op_stack.empty() && op_stack.top().first_char == '(') {
                 op_stack.pop();
-                if (!op_stack.empty() && op_stack.top().type == token::func) {
+                if (!op_stack.empty() && op_stack.top().type == func) {
                     output.push_back(op_stack.top());
                     op_stack.pop();
                 }
