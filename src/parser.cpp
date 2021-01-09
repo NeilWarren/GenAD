@@ -93,6 +93,7 @@ std::vector<token> parser::tokenizer(std::string input) {
             std::string sub_string = input.substr((int)std::distance(input.begin(), cstr_it) , reader.second);
             //std::cout << "variable name: " <<sub_string << std::endl;
             token t = token(*cstr_it, token::var, 0.0, this->initial_values[sub_string]);
+            t.set_var_name(sub_string);
             token_list.push_back(t);
             cstr_it = input.begin() + reader.second;
             

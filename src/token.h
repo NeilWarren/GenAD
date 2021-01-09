@@ -26,6 +26,7 @@ public:
     vector<token*> *parents;    // pointers to parents
     int precedence;
     char first_char;
+    string var_name;
 
 
     // num_vars is the length of the input vector
@@ -46,6 +47,10 @@ public:
 
     void set_func_type(std::string f){
         this->operation = move(f);
+    }
+
+    void set_var_name(std::string var) {
+        this->var_name = var;
     }
 
 };
