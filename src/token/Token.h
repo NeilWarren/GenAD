@@ -11,10 +11,9 @@ class Token {
 
 public:
 
-    token_type type;            // constant "c", binary op "b", var/trace "t", adjoint "a"
-    string operation;           // if unary op/function "f" Token, this is the type, e.g., sin, cos, exp...
-                                // if this is a binary operator type "b", this is add, sub, mul, div, or pow
-    double num_val;             // numeric value of the node
+    token_type type;
+    string operation;
+    double num_val;
     map<string, double> derivs;
     Token *l_c = nullptr;
     Token *r_c = nullptr;

@@ -67,7 +67,6 @@ map<string, double> AutoDiffRev::do_derivs(TokenRev* parent){
             double cur_val = tmp.second;
             if (ret_map.find(tmp.first->var_name) == ret_map.end()){
                 ret_map[tmp.first->var_name] = cur_val;
-
             } else {
                 ret_map[tmp.first->var_name] += cur_val;
             }
