@@ -8,86 +8,88 @@ enum node_type {
     add,
     mul,
     power,
-    inv,
+    divis,
     neg,
+    square_root,
     unary_op
 };
 
-class Node {
+class TokenRev {
 
 public:
     double v;
     string var_name = "";
     node_type t;
-    pair< pair<Node*, double>*, pair<Node*, double>* > *grad = nullptr;
+    pair< pair<TokenRev*, double>*, pair<TokenRev*, double>* > *derivs = nullptr;
 
-    Node(double val, string var){
+    TokenRev(double val, string var){
         t = leaf;
         var_name = var;
         v = val;
     }
 
-    Node(node_type t, Node* l, int i) {
+    TokenRev(node_type t, TokenRev* l, int i) {
         this->var_name =  "unary_" + to_string(i);
-        pair<Node*, double> *lc;
+        pair<TokenRev*, double> *lc;
         this->t = t;
         switch (t){
             case neg:
                 v =  -1*l->v;
-                lc = new pair<Node*, double>(l,-1);
+                lc = new pair<TokenRev*, double>(l, -1);
                 break;
-            case inv:
+            case divis:
                 v = 1 / l->v;
-                lc = new pair<Node*, double>(l,-1*pow(l->v,-2));
+                lc = new pair<TokenRev*, double>(l, -1 * pow(l->v, -2));
                 break;
-
-
-
+            case square_root:
+                v = pow(l->v, 0.5);
+                lc = new pair<TokenRev*, double>(l, 0.5 * pow(l->v, 0.5 - 1));
+                break;
 
         }
-        grad =  new pair< pair<Node*, double>*, pair<Node*, double>* >(lc,nullptr);
+        derivs =  new pair< pair<TokenRev*, double>*, pair<TokenRev*, double>* >(lc, nullptr);
     }
 
 
-    Node(node_type t, Node* l, Node* r, int i){
+    TokenRev(node_type t, TokenRev* l, TokenRev* r, int i){
         this->t = t;
-        pair<Node*, double> *lc, *rc;
+        pair<TokenRev*, double> *lc, *rc;
         this->var_name =  "trace_" + to_string(i);
         switch (t){
             case add:
                 v = l->v + r->v;
-                lc = new pair<Node*, double>(l,1);
-                rc = new  pair<Node*, double>(r,1);
+                lc = new pair<TokenRev*, double>(l, 1);
+                rc = new  pair<TokenRev*, double>(r, 1);
                 break;
             case mul:
                 v = l->v * r->v;
-                lc = new pair<Node*, double>(l,r->v);
-                rc = new  pair<Node*, double>(r,l->v);
+                lc = new pair<TokenRev*, double>(l, r->v);
+                rc = new  pair<TokenRev*, double>(r, l->v);
                 break;
             case power:
                 v = pow(l->v, r->v);
-                lc = new pair<Node*, double>(l,r->v * pow(l->v,r->v-1));
-                rc = new  pair<Node*, double>(r,log(l->v)* pow(l->v,r->v));
+                lc = new pair<TokenRev*, double>(l, r->v * pow(l->v, r->v - 1));
+                rc = new  pair<TokenRev*, double>(r, log(l->v) * pow(l->v, r->v));
                 break;
 
         }
-        grad =  new pair< pair<Node*, double>*, pair<Node*, double>* >(lc,rc);
+        derivs =  new pair< pair<TokenRev*, double>*, pair<TokenRev*, double>* >(lc, rc);
 
     }
 
-    Node(node_type t, Node* l, int i, string op) {
+    TokenRev(node_type t, TokenRev* l, int i, string op) {
         this->var_name =  "unary_" + to_string(i);
-        pair<Node*, double> *lc;
+        pair<TokenRev*, double> *lc;
         this->t = t;
 
         v =  get_v(l,op);
         lc = do_function_der(op,l);
 
 
-        grad =  new pair< pair<Node*, double>*, pair<Node*, double>* >(lc,nullptr);
+        derivs =  new pair< pair<TokenRev*, double>*, pair<TokenRev*, double>* >(lc, nullptr);
     }
 
-    double get_v(Node* v1, string op){
+    double get_v(TokenRev* v1, string op){
         double const_val;
         if (op == "sin") const_val = sin(v1->v);
         if (op == "cos") const_val = cos(v1->v);
@@ -115,7 +117,7 @@ public:
 
     }
 
-    pair<Node*, double>* do_function_der(string operation, Node *v1) {
+    pair<TokenRev*, double>* do_function_der(string operation, TokenRev *v1) {
 
         double der_val;
 
@@ -137,12 +139,10 @@ public:
 
         if (operation == "log") der_val =  (1/v1->v);
         if (operation == "exp") der_val =  exp(v1->v);
-        // Todo
-        if (operation == "sqrt") der_val =  0;
 
         if (operation == "lgs") der_val =  ( exp(-v1->v) / pow((1 + exp(-v1->v) ), 2) );
 
-        return new pair<Node*, double>(v1,der_val);
+        return new pair<TokenRev*, double>(v1, der_val);
 
     }
 

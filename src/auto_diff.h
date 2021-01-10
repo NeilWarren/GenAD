@@ -8,7 +8,7 @@
 #include "fwd/AutoDiffFwd.h"
 #include "fwd/DerivCalcFwd.h"
 #include "rev/AutoDiffRev.h"
-#include "rev/Node.h"
+#include "rev/TokenRev.h"
 
 
 

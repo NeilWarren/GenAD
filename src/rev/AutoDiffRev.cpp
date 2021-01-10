@@ -5,7 +5,7 @@
 AutoDiffRev::AutoDiffRev(vector<Token> toks, map<string, double> i) {
     this->tokenVec = toks;
     this->evalStack = new stack<Token*>();
-    this->nodeStack = new stack<Node*>();
+    this->nodeStack = new stack<TokenRev*>();
     this->inits = std::move(i);
 }
 
@@ -26,17 +26,17 @@ Token AutoDiffRev::eval() {
                 break;
             case constant:
                 this->evalStack->push(tmp);
-                this->nodeStack->push(new Node(tmp->num_val, "const_"+to_string(index)));
+                this->nodeStack->push(new TokenRev(tmp->num_val, "const_" + to_string(index)));
                 index++;
                 break;
             case var:
                 this->evalStack->push(tmp);
-                this->nodeStack->push(new Node(tmp->num_val, tmp->var_name));
+                this->nodeStack->push(new TokenRev(tmp->num_val, tmp->var_name));
                 break;
         }
     }
     
-    map<string, double> der = this->get_grad(nodeStack->top());
+    map<string, double> der = this->do_derivs(nodeStack->top());
     map<string, double> der_;
 
     for (auto &it : inits) {
@@ -48,41 +48,41 @@ Token AutoDiffRev::eval() {
    
 }
 
-map<string, double> AutoDiffRev::get_grad(Node* parent){
+map<string, double> AutoDiffRev::do_derivs(TokenRev* parent){
 
-    map<string, double> return_dict;
-    stack< pair<Node*, double> > s;
-    if (parent->grad != nullptr){
-        pair<Node *, double> l = *parent->grad->first;
+    map<string, double> ret_map;
+    stack< pair<TokenRev*, double> > s;
+    if (parent->derivs != nullptr){
+        pair<TokenRev *, double> l = *parent->derivs->first;
         s.push(l);
 
-        if (parent->grad->second != nullptr){
-            pair<Node*, double> r = *parent->grad->second;
+        if (parent->derivs->second != nullptr){
+            pair<TokenRev*, double> r = *parent->derivs->second;
             s.push(r);
         }
 
         while (!s.empty()){
-            pair<Node*, double> tmp = s.top();
+            pair<TokenRev*, double> tmp = s.top();
             s.pop();
-            Node* node = tmp.first;
-            double route_value = tmp.second;
-            if (return_dict.find(tmp.first->var_name) == return_dict.end()){
-                return_dict[tmp.first->var_name] = route_value;
-                //cout << "setting " << tmp.first->var_name << " to " << route_value << endl;
+            TokenRev* cur_tok = tmp.first;
+            double cur_val = tmp.second;
+            if (ret_map.find(tmp.first->var_name) == ret_map.end()){
+                ret_map[tmp.first->var_name] = cur_val;
+
             } else {
-                return_dict[tmp.first->var_name] += route_value;
-                //cout << "adding " << tmp.first->var_name << " of " << route_value << endl;
+                ret_map[tmp.first->var_name] += cur_val;
+
             }
-            if (node->t != leaf){
-                Node *child_node1 = node->grad->first->first;
-                double child_route_value1 = node->grad->first->second;
-                pair<Node*, double> tmp_l = pair<Node*, double>(child_node1,child_route_value1*route_value);
+            if (cur_tok->t != leaf){
+                TokenRev *left_child_tok = cur_tok->derivs->first->first;
+                double left_child_val = cur_tok->derivs->first->second;
+                pair<TokenRev*, double> tmp_l = pair<TokenRev*, double>(left_child_tok, left_child_val * cur_val);
                 s.push(tmp_l);
 
-                if (node->grad->second != nullptr) {
-                    Node *child_node2 = node->grad->second->first;
-                    double child_route_value2 = node->grad->second->second;
-                    pair<Node *, double> tmp_r = pair<Node *, double>(child_node2, child_route_value2 * route_value);
+                if (cur_tok->derivs->second != nullptr) {
+                    TokenRev *right_child_tok = cur_tok->derivs->second->first;
+                    double right_child_val = cur_tok->derivs->second->second;
+                    pair<TokenRev *, double> tmp_r = pair<TokenRev *, double>(right_child_tok, right_child_val * cur_val);
                     s.push(tmp_r);
                 }
 
@@ -91,7 +91,7 @@ map<string, double> AutoDiffRev::get_grad(Node* parent){
         }
 
     }
-    return return_dict;
+    return ret_map;
 
 }
 
@@ -110,34 +110,34 @@ void AutoDiffRev::do_binary_op(Token *tmp) {
     v1 = evalStack->top();
     this->evalStack->pop();
 
-    Node* v2_ = nodeStack->top();
+    TokenRev* v2_ = nodeStack->top();
     this->nodeStack->pop();
 
-    Node* v1_ = nodeStack->top();
+    TokenRev* v1_ = nodeStack->top();
     this->nodeStack->pop();
 
     switch (tmp->first_char) {
         case '+':
             const_val = v1->num_val + v2->num_val;
-            nodeStack->push(new Node(add, v1_, v2_, index));
+            nodeStack->push(new TokenRev(add, v1_, v2_, index));
             index++;
             break;
         case '-':
             const_val = v1->num_val - v2->num_val;
-            nodeStack->push(new Node(add, v1_,new Node(neg, v2_, ++index), ++index));
+            nodeStack->push(new TokenRev(add, v1_, new TokenRev(neg, v2_, ++index), ++index));
             break;
         case '*':
             const_val = v1->num_val * v2->num_val;
-            nodeStack->push(new Node(mul, v1_, v2_, index));
+            nodeStack->push(new TokenRev(mul, v1_, v2_, index));
             index++;
             break;
         case '/':
             const_val = v1->num_val / v2->num_val;
-            nodeStack->push(new Node(mul, v1_,new Node(inv, v2_, ++index), ++index));
+            nodeStack->push(new TokenRev(mul, v1_, new TokenRev(divis, v2_, ++index), ++index));
             break;
         case '^':
             const_val = pow(v1->num_val, v2->num_val);
-            nodeStack->push(new Node(power, v1_, v2_, index));
+            nodeStack->push(new TokenRev(power, v1_, v2_, index));
 
     }
     tmp->set_n_val(const_val);
@@ -152,10 +152,8 @@ void AutoDiffRev::do_function(Token *tmp) {
     v1 = evalStack->top();
     this->evalStack->pop();
 
-    Node* v1_ = nodeStack->top();
+    TokenRev* v1_ = nodeStack->top();
     this->nodeStack->pop();
-
-    tmp->set_lc(v1);
 
     if (tmp->operation == "sin") const_val = sin(v1->num_val);
     if (tmp->operation == "cos") const_val = cos(v1->num_val);
@@ -176,7 +174,6 @@ void AutoDiffRev::do_function(Token *tmp) {
     if (tmp->operation == "log") const_val = 1/log(v1->num_val);
     if (tmp->operation == "exp") const_val = exp(v1->num_val);
 
-    // Todo
     if (tmp->operation == "sqrt") const_val = pow(v1->num_val, 0.5);
 
     if (tmp->operation == "lgs") const_val = 1 / (1 + exp((-1 * v1->num_val) ));
@@ -184,7 +181,14 @@ void AutoDiffRev::do_function(Token *tmp) {
     tmp->set_n_val(const_val);
     this->evalStack->push(tmp);
 
-    nodeStack->push(new Node(unary_op, v1_, ++index, tmp->operation));
+    if (tmp->operation != "sqrt"){
+        nodeStack->push(new TokenRev(unary_op, v1_, ++index, tmp->operation));
+    } else {
+        nodeStack->push(new TokenRev(square_root, v1_, ++index));
+    }
+
+
+
 
 
 }
