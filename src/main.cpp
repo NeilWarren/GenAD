@@ -28,7 +28,7 @@ std::string parser_print(vector<Token> tokenVec) {
 int main() {
 
 	std::cout << "Hello, World!" << std::endl;
-	std::string input = "sqrt(x0)*x1+x2";
+	std::string input = "sqrt(x0)*x1+x2*3";
 	map<std::string, double> inits;
 	inits["x0"] = 1.2;
 	inits["x1"] = 1.3;

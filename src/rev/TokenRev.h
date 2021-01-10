@@ -45,11 +45,9 @@ public:
                 v = pow(l->v, 0.5);
                 lc = new pair<TokenRev*, double>(l, 0.5 * pow(l->v, 0.5 - 1));
                 break;
-
         }
         derivs =  new pair< pair<TokenRev*, double>*, pair<TokenRev*, double>* >(lc, nullptr);
     }
-
 
     TokenRev(node_type t, TokenRev* l, TokenRev* r, int i){
         this->t = t;
@@ -74,18 +72,14 @@ public:
 
         }
         derivs =  new pair< pair<TokenRev*, double>*, pair<TokenRev*, double>* >(lc, rc);
-
     }
 
     TokenRev(node_type t, TokenRev* l, int i, string op) {
         this->var_name =  "unary_" + to_string(i);
         pair<TokenRev*, double> *lc;
         this->t = t;
-
         v =  get_v(l,op);
         lc = do_function_der(op,l);
-
-
         derivs =  new pair< pair<TokenRev*, double>*, pair<TokenRev*, double>* >(lc, nullptr);
     }
 
@@ -145,10 +139,6 @@ public:
         return new pair<TokenRev*, double>(v1, der_val);
 
     }
-
-
-
-
 };
 
 

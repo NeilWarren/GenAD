@@ -9,7 +9,6 @@ AutoDiffRev::AutoDiffRev(vector<Token> toks, map<string, double> i) {
     this->inits = std::move(i);
 }
 
-
 Token AutoDiffRev::eval() {
     
     Token *tmp;
@@ -71,7 +70,6 @@ map<string, double> AutoDiffRev::do_derivs(TokenRev* parent){
 
             } else {
                 ret_map[tmp.first->var_name] += cur_val;
-
             }
             if (cur_tok->t != leaf){
                 TokenRev *left_child_tok = cur_tok->derivs->first->first;
@@ -85,14 +83,10 @@ map<string, double> AutoDiffRev::do_derivs(TokenRev* parent){
                     pair<TokenRev *, double> tmp_r = pair<TokenRev *, double>(right_child_tok, right_child_val * cur_val);
                     s.push(tmp_r);
                 }
-
             }
-
         }
-
     }
     return ret_map;
-
 }
 
 
@@ -119,8 +113,7 @@ void AutoDiffRev::do_binary_op(Token *tmp) {
     switch (tmp->first_char) {
         case '+':
             const_val = v1->num_val + v2->num_val;
-            nodeStack->push(new TokenRev(add, v1_, v2_, index));
-            index++;
+            nodeStack->push(new TokenRev(add, v1_, v2_, ++index));
             break;
         case '-':
             const_val = v1->num_val - v2->num_val;
@@ -128,8 +121,7 @@ void AutoDiffRev::do_binary_op(Token *tmp) {
             break;
         case '*':
             const_val = v1->num_val * v2->num_val;
-            nodeStack->push(new TokenRev(mul, v1_, v2_, index));
-            index++;
+            nodeStack->push(new TokenRev(mul, v1_, v2_, ++index));
             break;
         case '/':
             const_val = v1->num_val / v2->num_val;
@@ -137,7 +129,7 @@ void AutoDiffRev::do_binary_op(Token *tmp) {
             break;
         case '^':
             const_val = pow(v1->num_val, v2->num_val);
-            nodeStack->push(new TokenRev(power, v1_, v2_, index));
+            nodeStack->push(new TokenRev(power, v1_, v2_, ++index));
 
     }
     tmp->set_n_val(const_val);
@@ -186,10 +178,6 @@ void AutoDiffRev::do_function(Token *tmp) {
     } else {
         nodeStack->push(new TokenRev(square_root, v1_, ++index));
     }
-
-
-
-
 
 }
 
