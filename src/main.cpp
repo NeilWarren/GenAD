@@ -28,11 +28,11 @@ std::string parser_print(vector<Token> tokenVec) {
 int main() {
 
 	std::cout << "Hello, World!" << std::endl;
-	std::string input = "(x0+x1)/(x2)";
+	std::string input = "x1*x0*3+3*x0";
 	map<std::string, double> inits;
 	inits["x0"] = 1.0;
 	inits["x1"] = 1.0;
-	inits["x2"] = 2.0;
+	//inits["x2"] = 2.0;
 
    std::vector<Token> token_list = parser(input, inits).token_list;
 

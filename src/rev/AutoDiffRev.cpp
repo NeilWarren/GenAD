@@ -49,7 +49,6 @@ double AutoDiffRev::get_deriv(Token *tmp, string target, char op) {
                     return get_deriv(tmp->l_c, target, tmp->first_char) + get_deriv(tmp->r_c, target, tmp->first_char);
                 case '-':
                     return get_deriv(tmp->l_c, target, tmp->first_char) - get_deriv(tmp->r_c, target, tmp->first_char);
-
                 case '*':
                     return get_deriv(tmp->l_c, target, tmp->first_char) * get_deriv(tmp->r_c, target, tmp->first_char);
                 case '/':
@@ -69,6 +68,7 @@ double AutoDiffRev::get_deriv(Token *tmp, string target, char op) {
                 case 'x':
                     return 0;
                 case '*':
+                    return inits[tmp->var_name];
                 case '/':
                     return inits[tmp->var_name];
             }

@@ -2,6 +2,8 @@
 #define AUTODIFF_AUTODIFFREV_H
 
 #include "../auto_diff.h"
+#include "Node.h"
+
 using namespace std;
 
 class AutoDiffRev  {
@@ -12,6 +14,7 @@ public:
 
     stack<Token*>* evalStack;
     vector<Token> tokenVec;
+    vector<Node> node_vec;
 
     Token eval();
     void do_binary_op(Token* tmp);

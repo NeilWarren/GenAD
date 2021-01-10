@@ -17,8 +17,9 @@ std::pair<double, int> parser::decimal_reader(std::string input, int input_dista
     stack<char> const_stack;
     int i=0;
     bool track_dots = false;
-    auto cstr_it = input.cbegin() + input_distance;
+    auto cstr_it = input.begin() + input_distance;
 
+    // Note doesn't work with cmake 3.17
     while (isdigit((int)*cstr_it) != 0 || *cstr_it == '.') {
         if (*cstr_it == '.') {
             track_dots = true;
@@ -53,6 +54,7 @@ std::vector<Token> parser::tokenizer(std::string input) {
     auto cstr_it = input.begin();
 
     while(cstr_it != input.end()) {
+        //cout << *cstr_it << endl;
         if (is_in_array(*cstr_it, functions_char, function_length)) {
             Token t = Token(*cstr_it, func);
             std::string f;
