@@ -1,6 +1,6 @@
-#include "DerivCalc.h"
+#include "DerivCalcFwd.h"
 
-map<string, double> DerivCalc::deriv_sum(Token *v1, Token *v2) {
+map<string, double> DerivCalcFwd::deriv_sum(Token *v1, Token *v2) {
 
     set<string> keys = get_key_set(v1, v2);
     map<string, double> sum;
@@ -11,7 +11,7 @@ map<string, double> DerivCalc::deriv_sum(Token *v1, Token *v2) {
     return sum;
 }
 
-map<string, double> DerivCalc::deriv_diff(Token *v1, Token *v2) {
+map<string, double> DerivCalcFwd::deriv_diff(Token *v1, Token *v2) {
 
     set<string> keys = get_key_set(v1, v2);
     map<string, double> diff;
@@ -22,7 +22,7 @@ map<string, double> DerivCalc::deriv_diff(Token *v1, Token *v2) {
     return diff;
 }
 
-map<string, double> DerivCalc::deriv_product(Token *v1, Token *v2) {
+map<string, double> DerivCalcFwd::deriv_product(Token *v1, Token *v2) {
 
     set<string> keys = get_key_set(v1, v2);
     map<string, double> prod;
@@ -39,7 +39,7 @@ map<string, double> DerivCalc::deriv_product(Token *v1, Token *v2) {
     return prod;
 }
 
-map<string, double> DerivCalc::deriv_quotient(Token *v1, Token *v2) {
+map<string, double> DerivCalcFwd::deriv_quotient(Token *v1, Token *v2) {
 
     set<string> keys = get_key_set(v1, v2);
     map<string, double> q;
@@ -59,7 +59,7 @@ map<string, double> DerivCalc::deriv_quotient(Token *v1, Token *v2) {
 
 
 
-map<string, double> DerivCalc::deriv_power(Token *v1, Token *v2) {
+map<string, double> DerivCalcFwd::deriv_power(Token *v1, Token *v2) {
 
     set<string> keys = get_key_set(v1, v2);
     map<string, double> p;
@@ -80,7 +80,7 @@ map<string, double> DerivCalc::deriv_power(Token *v1, Token *v2) {
 }
 
 
-Token* DerivCalc::do_sin(Token *v1) {
+Token* DerivCalcFwd::do_sin(Token *v1) {
     map<string, double> der;
 
     // calculate the numeric value as sin
@@ -94,7 +94,7 @@ Token* DerivCalc::do_sin(Token *v1) {
     return new Token('T', var, num_val, der);
 }
 
-Token* DerivCalc::do_cos(Token *v1) {
+Token* DerivCalcFwd::do_cos(Token *v1) {
     map<string, double> der;
 
     double num_val = cos(v1->num_val);
@@ -105,7 +105,7 @@ Token* DerivCalc::do_cos(Token *v1) {
     return new Token('T', var, num_val, der);
 }
 
-Token* DerivCalc::do_log(Token *v1) {
+Token* DerivCalcFwd::do_log(Token *v1) {
     map<string, double> der;
 
     double num_val = log(v1->num_val);
@@ -116,7 +116,7 @@ Token* DerivCalc::do_log(Token *v1) {
     return new Token('T', var, num_val, der);
 }
 
-Token* DerivCalc::do_tan(Token *v1) {
+Token* DerivCalcFwd::do_tan(Token *v1) {
     map<string, double> der;
 
     double num_val = tan(v1->num_val);
@@ -127,7 +127,7 @@ Token* DerivCalc::do_tan(Token *v1) {
     return new Token('T', var, num_val, der);
 }
 
-Token* DerivCalc::do_sec(Token *v1) {
+Token* DerivCalcFwd::do_sec(Token *v1) {
     map<string, double> der;
 
     // sec x tan x
@@ -139,7 +139,7 @@ Token* DerivCalc::do_sec(Token *v1) {
     return new Token('T', var, num_val, der);
 }
 
-Token* DerivCalc::do_csc(Token *v1) {
+Token* DerivCalcFwd::do_csc(Token *v1) {
     map<string, double> der;
 
     //  -csc x cot x
@@ -151,7 +151,7 @@ Token* DerivCalc::do_csc(Token *v1) {
     return new Token('T', var, num_val, der);
 }
 
-Token* DerivCalc::do_cot(Token *v1) {
+Token* DerivCalcFwd::do_cot(Token *v1) {
     map<string, double> der;
 
     //  - csc2 x
@@ -163,7 +163,7 @@ Token* DerivCalc::do_cot(Token *v1) {
     return new Token('T', var, num_val, der);
 }
 
-Token* DerivCalc::do_asin(Token *v1) {
+Token* DerivCalcFwd::do_asin(Token *v1) {
     map<string, double> der;
 
     double num_val = asin(v1->num_val);
@@ -177,7 +177,7 @@ Token* DerivCalc::do_asin(Token *v1) {
     return new Token('T', var, num_val, der);
 }
 
-Token* DerivCalc::do_acos(Token *v1) {
+Token* DerivCalcFwd::do_acos(Token *v1) {
     map<string, double> der;
 
     double num_val = acos(v1->num_val);
@@ -191,7 +191,7 @@ Token* DerivCalc::do_acos(Token *v1) {
     return new Token('T', var, num_val, der);
 }
 
-Token* DerivCalc::do_atan(Token *v1) {
+Token* DerivCalcFwd::do_atan(Token *v1) {
     map<string, double> der;
 
     double num_val = atan(v1->num_val);
@@ -205,7 +205,7 @@ Token* DerivCalc::do_atan(Token *v1) {
     return new Token('T', var, num_val, der);
 }
 
-Token* DerivCalc::do_sinh(Token *v1) {
+Token* DerivCalcFwd::do_sinh(Token *v1) {
     map<string, double> der;
 
     // calculate the numeric value as sin
@@ -219,7 +219,7 @@ Token* DerivCalc::do_sinh(Token *v1) {
     return new Token('T', var, num_val, der);
 }
 
-Token* DerivCalc::do_cosh(Token *v1) {
+Token* DerivCalcFwd::do_cosh(Token *v1) {
     map<string, double> der;
 
     double num_val = cosh(v1->num_val);
@@ -230,7 +230,7 @@ Token* DerivCalc::do_cosh(Token *v1) {
     return new Token('T', var, num_val, der);
 }
 
-Token* DerivCalc::do_tanh(Token *v1) {
+Token* DerivCalcFwd::do_tanh(Token *v1) {
     map<string, double> der;
 
     double num_val = tanh(v1->num_val);
@@ -241,7 +241,7 @@ Token* DerivCalc::do_tanh(Token *v1) {
     return new Token('T', var, num_val, der);
 }
 
-Token* DerivCalc::do_exp(Token *v1) {
+Token* DerivCalcFwd::do_exp(Token *v1) {
     map<string, double> der;
 
     double num_val = exp(v1->num_val);
@@ -252,7 +252,7 @@ Token* DerivCalc::do_exp(Token *v1) {
     return new Token('T', var, num_val, der);
 }
 
-Token* DerivCalc::do_sqrt(Token *v1) {
+Token* DerivCalcFwd::do_sqrt(Token *v1) {
     map<string, double> der, return_der;
     double num_val;
     Token exp_tok = Token('C', constant, 0,0.5);
@@ -263,7 +263,7 @@ Token* DerivCalc::do_sqrt(Token *v1) {
     return new Token('T', var, num_val, return_der);
 }
 
-Token* DerivCalc::do_lgs(Token *v1) {
+Token* DerivCalcFwd::do_lgs(Token *v1) {
 
     //  f(x) = 1 / (1 + exp(-1*x))
     // f'(x) = exp(x) / ( 1 + exp(x) )^2
@@ -280,7 +280,7 @@ Token* DerivCalc::do_lgs(Token *v1) {
 
 
 
-set<string> DerivCalc::get_key_set(Token *v1, Token *v2) {
+set<string> DerivCalcFwd::get_key_set(Token *v1, Token *v2) {
     set<string> return_set;
     if (!v1->derivs.empty()){
         for (auto &it : v1->derivs) {

@@ -72,6 +72,7 @@ std::vector<Token> parser::tokenizer(std::string input) {
             int start_index = (int)std::distance(input.begin(), cstr_it);
             std::string sub_string = input.substr(start_index, reader.second - start_index);
             Token t = Token(*cstr_it, var, 0.0, this->initial_values[sub_string]);
+            t.derivs.insert({sub_string, 1});
             t.set_var_name(sub_string);
             token_list.push_back(t);
             cstr_it = input.begin() + reader.second;

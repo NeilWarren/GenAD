@@ -28,9 +28,6 @@ public:
         this->type = type;
         this->precedence = precedence;
         this->operation = move(op);
-        if (t != 'a') {
-            //this->derivs = new map<string, double>;
-        }
 
     }
     Token(char t, token_type type, double n_val,  map<string, double> d){
@@ -49,6 +46,15 @@ public:
 
     void set_var_name(std::string var) {
         this->var_name = var;
+    }
+    void set_lc(Token* t){
+        this->l_c = t;
+    }
+    void set_rc(Token* t){
+        this->r_c = t;
+    }
+    void set_n_val(double v){
+        this->num_val = v;
     }
 
 };

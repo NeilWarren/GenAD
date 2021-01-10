@@ -28,7 +28,7 @@ std::string parser_print(vector<Token> tokenVec) {
 int main() {
 
 	std::cout << "Hello, World!" << std::endl;
-	std::string input = "(x0+x1)/exp(x2)";
+	std::string input = "(x0+x1)/(x2)";
 	map<std::string, double> inits;
 	inits["x0"] = 1.0;
 	inits["x1"] = 1.0;
@@ -45,6 +45,15 @@ int main() {
     for (auto & it2 : result.derivs) {
         cout << "df/d" << it2.first << " = " << it2.second << endl;
     }
+
+    AutoDiffRev ad2 = AutoDiffRev(token_list, inits);
+    Token result2 = ad2.eval();
+    cout << result2.num_val << endl;
+
+    for (auto & it2 : result2.derivs) {
+        cout << "df/d" << it2.first << " = " << it2.second << endl;
+    }
+
 
     return 0;
 }

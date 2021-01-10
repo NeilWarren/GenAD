@@ -3,7 +3,7 @@
 
 #include "../auto_diff.h"
 
-class DerivCalc {
+class DerivCalcFwd {
 
 public:
 
