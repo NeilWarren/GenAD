@@ -7,6 +7,7 @@ enum node_type {
     leaf,
     add,
     mul,
+    power,
     inv,
     neg,
     unary_op
@@ -62,6 +63,11 @@ public:
                 v = l->v * r->v;
                 lc = new pair<Node*, double>(l,r->v);
                 rc = new  pair<Node*, double>(r,l->v);
+                break;
+            case power:
+                v = pow(l->v, r->v);
+                lc = new pair<Node*, double>(l,r->v * pow(l->v,r->v-1));
+                rc = new  pair<Node*, double>(r,log(l->v)* pow(l->v,r->v));
                 break;
 
         }

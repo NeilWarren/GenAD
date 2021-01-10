@@ -55,7 +55,7 @@ map<string, double> AutoDiffRev::get_grad(Node* parent){
     if (parent->grad != nullptr){
         pair<Node *, double> l = *parent->grad->first;
         s.push(l);
-        
+
         if (parent->grad->second != nullptr){
             pair<Node*, double> r = *parent->grad->second;
             s.push(r);
@@ -116,9 +116,6 @@ void AutoDiffRev::do_binary_op(Token *tmp) {
     Node* v1_ = nodeStack->top();
     this->nodeStack->pop();
 
-    tmp->set_lc(v1);
-    tmp->set_rc(v2);
-
     switch (tmp->first_char) {
         case '+':
             const_val = v1->num_val + v2->num_val;
@@ -140,10 +137,10 @@ void AutoDiffRev::do_binary_op(Token *tmp) {
             break;
         case '^':
             const_val = pow(v1->num_val, v2->num_val);
+            nodeStack->push(new Node(power, v1_, v2_, index));
 
     }
     tmp->set_n_val(const_val);
-    //cout << tmp->first_char << endl;
     this->evalStack->push(tmp);
 
 }
