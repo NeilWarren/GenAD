@@ -107,7 +107,7 @@ std::vector<Token> parser::tokenizer(std::string input) {
 
             } else {
 
-                Token t = Token(*cstr_it, binary_op, 0, precedence[*cstr_it]);
+                Token t = Token(*cstr_it, binary_op, precedence[*cstr_it]);
                 token_list.push_back(t);
                 cstr_it++;
             }
