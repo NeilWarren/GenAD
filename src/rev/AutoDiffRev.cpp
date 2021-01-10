@@ -5,6 +5,7 @@
 AutoDiffRev::AutoDiffRev(vector<Token> toks, map<string, double> i) {
     this->tokenVec = toks;
     this->evalStack = new stack<Token*>();
+    this->nodeStack = new stack<Node*>();
     this->inits = std::move(i);
 }
 
@@ -24,70 +25,75 @@ Token AutoDiffRev::eval() {
                 do_function(tmp);
                 break;
             case constant:
+                this->evalStack->push(tmp);
+                this->nodeStack->push(new Node(tmp->num_val, "const_"+to_string(index)));
+                index++;
+                break;
             case var:
                 this->evalStack->push(tmp);
+                this->nodeStack->push(new Node(tmp->num_val, tmp->var_name));
                 break;
         }
     }
     
-    map<string, double> der;
+    map<string, double> der = this->get_grad(nodeStack->top());
+    map<string, double> der_;
+
     for (auto &it : inits) {
-        der.insert({it.first, get_deriv(evalStack->top(), it.first)});
+        der_.insert({it.first, der[it.first]});
     }
 
-    Token t = Token('T', var, evalStack->top()->num_val, der);
+    Token t = Token('T', var, evalStack->top()->num_val, der_);
     return t;
    
 }
 
-double AutoDiffRev::get_deriv(Token *tmp, string target, char op) {
+map<string, double> AutoDiffRev::get_grad(Node* parent){
 
-    switch (tmp->type) {
-        case binary_op:
-            switch (tmp->first_char) {
-                case '+':
-                    return get_deriv(tmp->l_c, target, tmp->first_char) + get_deriv(tmp->r_c, target, tmp->first_char);
-                case '-':
-                    return get_deriv(tmp->l_c, target, tmp->first_char) - get_deriv(tmp->r_c, target, tmp->first_char);
-                case '*':
-                    return get_deriv(tmp->l_c, target, tmp->first_char) * get_deriv(tmp->r_c, target, tmp->first_char);
-                case '/':
-                    return get_deriv(tmp->l_c, target, tmp->first_char) / get_deriv(tmp->r_c, target, tmp->first_char);
-                case '^':
-                    return pow(get_deriv(tmp->l_c, target, tmp->first_char), get_deriv(tmp->r_c, target, tmp->first_char));
-            }
-            break;
-        case func:
-            return do_function_der(tmp->operation, tmp->l_c, target);
+    map<string, double> return_dict;
+    stack< pair<Node*, double> > s;
+    if (parent->grad != nullptr){
+        pair<Node *, double> l = *parent->grad->first;
+        s.push(l);
+        
+        if (parent->grad->second != nullptr){
+            pair<Node*, double> r = *parent->grad->second;
+            s.push(r);
+        }
 
-        case var:
-            if (tmp->var_name == target) return 1;
-            switch (op) {
-                case '+':
-                case '-':
-                case 'x':
-                    return 0;
-                case '*':
-                    return inits[tmp->var_name];
-                case '/':
-                    return inits[tmp->var_name];
+        while (!s.empty()){
+            pair<Node*, double> tmp = s.top();
+            s.pop();
+            Node* node = tmp.first;
+            double route_value = tmp.second;
+            if (return_dict.find(tmp.first->var_name) == return_dict.end()){
+                return_dict[tmp.first->var_name] = route_value;
+                //cout << "setting " << tmp.first->var_name << " to " << route_value << endl;
+            } else {
+                return_dict[tmp.first->var_name] += route_value;
+                //cout << "adding " << tmp.first->var_name << " of " << route_value << endl;
             }
-        case constant:
-            switch (op) {
-                case '+':
-                case '-':
-                case 'x':
-                    return 0;
-                case '*':
-                case '/':
-                    return tmp->num_val;
+            if (node->t != leaf){
+                Node *child_node1 = node->grad->first->first;
+                double child_route_value1 = node->grad->first->second;
+                pair<Node*, double> tmp_l = pair<Node*, double>(child_node1,child_route_value1*route_value);
+                s.push(tmp_l);
+
+                if (node->grad->second != nullptr) {
+                    Node *child_node2 = node->grad->second->first;
+                    double child_route_value2 = node->grad->second->second;
+                    pair<Node *, double> tmp_r = pair<Node *, double>(child_node2, child_route_value2 * route_value);
+                    s.push(tmp_r);
+                }
+
             }
 
+        }
 
     }
+    return return_dict;
 
 }
-
 
 
 
@@ -104,21 +110,33 @@ void AutoDiffRev::do_binary_op(Token *tmp) {
     v1 = evalStack->top();
     this->evalStack->pop();
 
+    Node* v2_ = nodeStack->top();
+    this->nodeStack->pop();
+
+    Node* v1_ = nodeStack->top();
+    this->nodeStack->pop();
+
     tmp->set_lc(v1);
     tmp->set_rc(v2);
 
     switch (tmp->first_char) {
         case '+':
             const_val = v1->num_val + v2->num_val;
+            nodeStack->push(new Node(add, v1_, v2_, index));
+            index++;
             break;
         case '-':
             const_val = v1->num_val - v2->num_val;
+            nodeStack->push(new Node(add, v1_,new Node(neg, v2_, ++index), ++index));
             break;
         case '*':
             const_val = v1->num_val * v2->num_val;
+            nodeStack->push(new Node(mul, v1_, v2_, index));
+            index++;
             break;
         case '/':
             const_val = v1->num_val / v2->num_val;
+            nodeStack->push(new Node(mul, v1_,new Node(inv, v2_, ++index), ++index));
             break;
         case '^':
             const_val = pow(v1->num_val, v2->num_val);
@@ -136,6 +154,9 @@ void AutoDiffRev::do_function(Token *tmp) {
 
     v1 = evalStack->top();
     this->evalStack->pop();
+
+    Node* v1_ = nodeStack->top();
+    this->nodeStack->pop();
 
     tmp->set_lc(v1);
 
@@ -166,38 +187,11 @@ void AutoDiffRev::do_function(Token *tmp) {
     tmp->set_n_val(const_val);
     this->evalStack->push(tmp);
 
-
-}
-
-double AutoDiffRev::do_function_der(string operation, Token *v1, string target_var) {
-
-    if (operation == "sin") return cos(v1->num_val) *  get_deriv(v1, target_var);
-    if (operation == "cos") return -1*sin(v1->num_val) *  get_deriv(v1, target_var);
-    if (operation == "tan") return (1/cos(v1->num_val))*(1/cos(v1->num_val))* get_deriv(v1, target_var);
-
-    if (operation == "sinh") return cosh(v1->num_val)*get_deriv(v1, target_var);
-    if (operation == "cosh") return sinh(v1->num_val)*get_deriv(v1, target_var);
-    if (operation == "tanh") return (1-tanh(v1->num_val)*tanh(v1->num_val))*get_deriv(v1, target_var);
-
-    if (operation == "asin") return get_deriv(v1, target_var)/pow(v1->num_val*v1->num_val, 0.5);
-    if (operation == "acos") return -1*get_deriv(v1, target_var)/pow(1 - v1->num_val*v1->num_val, 0.5);
-    if (operation == "atan") return get_deriv(v1, target_var) / (1 + v1->num_val * v1->num_val);
-
-    if (operation == "sec") return (1/cos(v1->num_val))*(tan(v1->num_val))*get_deriv(v1, target_var);
-    if (operation == "csc") return (-1/sin(v1->num_val))*(1/tan(v1->num_val))*get_deriv(v1, target_var);
-    if (operation == "cot") return (-1/sin(v1->num_val))*(1/sin(v1->num_val))*get_deriv(v1, target_var);
-
-    if (operation == "log") return (1/v1->num_val)*get_deriv(v1, target_var);
-    if (operation == "exp") return exp(v1->num_val)*get_deriv(v1, target_var);
-    // Todo
-    if (operation == "sqrt") return 0;
-
-    if (operation == "lgs") return ( exp(-v1->num_val) / pow((1 + exp(-v1->num_val) ), 2) )*get_deriv(v1, target_var);
-
-
+    nodeStack->push(new Node(unary_op, v1_, ++index, tmp->operation));
 
 
 }
+
 
 
 
