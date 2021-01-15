@@ -9,7 +9,7 @@ float ComplexityEvaluator::eval() {
 	auto start = high_resolution_clock::now(); 
 	for (long i = 0; i < this->trials; ++i) {
 		std::vector<Token> token_list = parser(this->function, this->inits).token_list;
-		if (i == 10) {
+		if (i == 9) {
 			start = high_resolution_clock::now(); 
 		}
 	}
@@ -19,6 +19,6 @@ float ComplexityEvaluator::eval() {
 
 	long result = (long)duration.count();
 
-	return result / this->trials;
+	return result / (this->trials - 10);
 
 }
