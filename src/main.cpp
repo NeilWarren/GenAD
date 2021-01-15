@@ -1,4 +1,8 @@
+#include <iostream>
+#include <fstream>
+
 #include "auto_diff.h"
+
 using namespace std;
 
 std::string parser_print(vector<Token> tokenVec) {
@@ -28,6 +32,8 @@ std::string parser_print(vector<Token> tokenVec) {
 int main() {
 
 	std::cout << "Hello, World!" << std::endl;
+
+    /*
 	std::string input = "sqrt(x0)*x1+x2*3";
 	map<std::string, double> inits;
 	inits["x0"] = 1.2;
@@ -53,7 +59,15 @@ int main() {
     for (auto & it2 : result2.derivs) {
         cout << "df/d" << it2.first << " = " << it2.second << endl;
     }
+    */
 
+    ofstream file;
+    file.open("data.txt");
+    for (int i=5; i < 20; ++i) {
+        file << std::to_string(ComplexityEvaluator((long)pow(2.0, (double)i), 1000).eval());
+        file << "\n";
+    }
+    file.close();
 
     return 0;
 }

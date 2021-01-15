@@ -9,6 +9,7 @@
 #include "fwd/DerivCalcFwd.h"
 #include "rev/AutoDiffRev.h"
 #include "rev/TokenRev.h"
+#include "test/complexity.h"
 
 
 
@@ -16,5 +17,7 @@
 #include "fwd/AutoDiffFwd.cpp"
 #include "fwd/DerivCalcFwd.cpp"
 #include "rev/AutoDiffRev.cpp"
+#include "test/complexity.cpp"
+
 
 #endif //MISHRA_WARREN_AUTODIFF_AUTO_DIFF_H
