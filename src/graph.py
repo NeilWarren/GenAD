@@ -16,7 +16,7 @@ x_np_arr = np.array(x_arr)
 log_y_np_arr = np.log2(y_np_arr)
 
 plt.title('Input Size vs. Log_2 of Results')
-plt.xlabel('Function Input Size')
+plt.xlabel('Log Function Input Size')
 plt.ylabel('Log_2 of Timed Results (microseconds)')
 plt.plot(x_np_arr, log_y_np_arr)
 
