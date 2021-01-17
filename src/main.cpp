@@ -31,6 +31,7 @@ std::string parser_print(vector<Token> tokenVec) {
 
 int main() {
 
+
 	std::cout << "Hello, World!" << std::endl;
 
     /*
@@ -62,18 +63,28 @@ int main() {
     */
 
     ofstream file;
-    file.open("data_rev.txt");
-    for (int i=1; i < 11; ++i) {
+
+    file.open("data_parser.txt");
+    for (int i=1; i < 8; ++i) {
         cout << "i: " << i << endl;
-        file << std::to_string(ComplexityEvaluator((long)pow(2.0, (double)i), 100).eval(1));
+        file << std::to_string(ComplexityEvaluator((long)pow(2.0, (double)i), 100).eval_parse());
+        file << "\n";
+    }
+    file.close();
+
+
+    file.open("data_rev.txt");
+    for (int i=1; i < 8; ++i) {
+        cout << "i: " << i << endl;
+        file << std::to_string(ComplexityEvaluator((long)pow(2.0, (double)i), 100).eval_ad(1));
         file << "\n";
     }
     file.close();
 
     file.open("data_fwd.txt");
-    for (int i=1; i < 11; ++i) {
+    for (int i=1; i < 8; ++i) {
         cout << "i: " << i << endl;
-        file << std::to_string(ComplexityEvaluator((long)pow(2.0, (double)i), 100).eval(0));
+        file << std::to_string(ComplexityEvaluator((long)pow(2.0, (double)i), 100).eval_ad(0));
         file << "\n";
     }
     file.close();

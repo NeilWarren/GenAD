@@ -20,7 +20,7 @@ std::pair<double, int> parser::decimal_reader(std::string input, int input_dista
     auto cstr_it = input.begin() + input_distance;
 
     // Note doesn't work with cmake 3.17
-    while (isdigit((int)*cstr_it) != 0 || *cstr_it == '.') {
+    while ((cstr_it != input.end()) && (isdigit((int)*cstr_it) != 0 || *cstr_it == '.')) {
         if (*cstr_it == '.') {
             track_dots = true;
         }

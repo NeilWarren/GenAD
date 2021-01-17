@@ -29,6 +29,20 @@ x_np_arr_r = np.array(x_arr_r)
 
 log_y_np_arr_r = np.log2(y_np_arr_r)
 
+y_arr_p = []
+x_arr_p = []
+f = open("data_parser.txt", "r")
+i = 1
+for x in f:
+  y_arr_p.append(float(x))
+  x_arr_p.append(i)
+  i += 1
+
+y_np_arr_p = np.array(y_arr_p)
+x_np_arr_p = np.array(x_arr_p)
+
+log_y_np_arr_p = np.log2(y_np_arr_p)
+
 
 
 plt.title('Input Size vs. Log_2 of Results')
@@ -36,6 +50,7 @@ plt.xlabel('Log Function Input Size')
 plt.ylabel('Log_2 of Timed Results (microseconds)')
 plt.plot(x_np_arr, log_y_np_arr, 'b')
 plt.plot(x_np_arr_r, log_y_np_arr_r, 'r')
+plt.plot(x_np_arr_p, log_y_np_arr_p, 'g')
 
 plt.show()
 

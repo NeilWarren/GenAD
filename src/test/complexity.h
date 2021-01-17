@@ -26,7 +26,8 @@ public:
     	}
     }
 
-    float eval(int mode);
+    float eval_ad(int mode);
+    float eval_parse();
 
 };
 
