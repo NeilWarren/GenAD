@@ -63,17 +63,17 @@ int main() {
 
     ofstream file;
     file.open("data_rev.txt");
-    for (int i=1; i < 10; ++i) {
+    for (int i=1; i < 11; ++i) {
         cout << "i: " << i << endl;
-        file << std::to_string(ComplexityEvaluator((long)pow(2.0, (double)i), 200).eval(1));
+        file << std::to_string(ComplexityEvaluator((long)pow(2.0, (double)i), 100).eval(1));
         file << "\n";
     }
     file.close();
 
     file.open("data_fwd.txt");
-    for (int i=1; i < 10; ++i) {
+    for (int i=1; i < 11; ++i) {
         cout << "i: " << i << endl;
-        file << std::to_string(ComplexityEvaluator((long)pow(2.0, (double)i), 200).eval(0));
+        file << std::to_string(ComplexityEvaluator((long)pow(2.0, (double)i), 100).eval(0));
         file << "\n";
     }
     file.close();

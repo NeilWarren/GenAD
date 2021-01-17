@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 y_arr = []
 x_arr = []
 f = open("data_fwd.txt", "r")
-i = 5
+i = 1
 for x in f:
   y_arr.append(float(x))
   x_arr.append(i)
@@ -18,7 +18,7 @@ log_y_np_arr = np.log2(y_np_arr)
 y_arr_r = []
 x_arr_r = []
 f_r = open("data_rev.txt", "r")
-i = 5
+i = 1
 for x in f_r:
   y_arr_r.append(float(x))
   x_arr_r.append(i)

@@ -21,7 +21,7 @@ public:
 
     	for (long i = 1; i < input_length; ++i) {
     		string var_name = "x" + std::to_string(i);
-    		inits[var_name] = 0.1;
+    		inits[var_name] = 1.0;
     		function += "*" + var_name;
     	}
     }
