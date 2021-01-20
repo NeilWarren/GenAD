@@ -57,15 +57,42 @@ x_np_arr_p1 = np.array(x_arr_p1)
 
 log_y_np_arr_p1 = np.log2(y_np_arr_p1)
 
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+
+ax = plt.subplot(111)
+ax.grid('on')
 
 
-plt.title('Input Size vs. Log_2 of Results')
-plt.xlabel('Log Function Input Size')
-plt.ylabel('Log_2 of Timed Results (microseconds)')
-plt.plot(x_np_arr, log_y_np_arr, 'b')
-plt.plot(x_np_arr_r, log_y_np_arr_r, 'r')
-plt.plot(x_np_arr_p, log_y_np_arr_p, 'g')
-plt.plot(x_np_arr_p1, log_y_np_arr_p1, '#800080')
+# remove tick marks
+ax.xaxis.set_tick_params(size=0)
+ax.yaxis.set_tick_params(size=0)
+
+# tweak the axis labels
+xlab = ax.xaxis.get_label()
+ylab = ax.yaxis.get_label()
+
+xlab.set_style('italic')
+xlab.set_size(10)
+ylab.set_style('italic')
+ylab.set_size(10)
+
+# tweak the title
+ttl = ax.title
+ttl.set_weight('bold')
+
+plt.title('log2 of Input Size vs. log2 of Results')
+plt.xlabel('log2 Function Input Size')
+plt.ylabel('log2 of Timed Results (microseconds)')
+plt.plot(x_np_arr, log_y_np_arr, '#0000CC', alpha=0.9, label="Forward Mode")
+plt.plot(x_np_arr_r, log_y_np_arr_r, 'r', alpha=0.9, label="Reverse Mode")
+
+
+plt.plot(x_np_arr_p, log_y_np_arr_p, 'g', alpha=0.9, label="Tokenization & Shunting Yard")
+plt.plot(x_np_arr_p1, log_y_np_arr_p1, '#800080', alpha=0.9, label="Shunting Yard Processing Only")
+
+handles, labels = ax.get_legend_handles_labels()
+ax.legend(handles, labels)
 
 
 plt.show()
