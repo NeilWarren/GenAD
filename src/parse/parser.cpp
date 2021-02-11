@@ -122,7 +122,8 @@ std::vector<Token> parser::tokenizer(std::string input) {
         else {
             std::string msg = "unable to parse input character: ";
             msg += *cstr_it;
-            throw std::invalid_argument(msg);
+            cstr_it++;
+            //throw std::invalid_argument(msg);
         }
     }
 

@@ -34,17 +34,16 @@ int main() {
 
 	std::cout << "Hello, World!" << std::endl;
 
-    /*
-	std::string input = "sqrt(x0)*x1+x2*3";
-	map<std::string, double> inits;
-	inits["x0"] = 1.2;
-	inits["x1"] = 1.3;
-	inits["x2"] = 2.0;
+    
+	std::pair<string, map<std::string, double>> file_output = autodiff_file_reader("example.txt");
+    string input = file_output.first;
+    map<std::string, double> inits = file_output.second;
 
    std::vector<Token> token_list = parser(input, inits).token_list;
 
     cout << parser_print(token_list) << endl;
 
+    /*
     AutoDiffFwd ad = AutoDiffFwd(token_list);
     Token result = ad.eval();
     cout << result.num_val << endl;
@@ -52,6 +51,7 @@ int main() {
     for (auto & it2 : result.derivs) {
         cout << "df/d" << it2.first << " = " << it2.second << endl;
     }
+    */
 
     AutoDiffRev ad2 = AutoDiffRev(token_list, inits);
     Token result2 = ad2.eval();
@@ -60,7 +60,7 @@ int main() {
     for (auto & it2 : result2.derivs) {
         cout << "df/d" << it2.first << " = " << it2.second << endl;
     }
-    */
+    /*
 
     ofstream file;
 
@@ -88,6 +88,7 @@ int main() {
         file << "\n";
     }
     file.close();
+    */
 
     return 0;
 }
