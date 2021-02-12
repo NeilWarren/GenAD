@@ -35,7 +35,7 @@ int main() {
 	std::cout << "Hello, World!" << std::endl;
 
     
-	std::pair<string, map<std::string, double>> file_output = autodiff_file_reader("../example.txt");
+	std::pair<string, map<std::string, double>> file_output = autodiff_file_reader("example.txt");
 	auto vm = var_map(file_output);
 
     string input = vm.out_func;

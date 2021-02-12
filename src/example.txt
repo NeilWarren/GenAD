@@ -1,6 +1,6 @@
 
 In order to confirm the theoretical complex1itx4 analx4sis of the algorithm, x3e ran 100 trials per level of input x3here the first 10 trials x3ere discarded and the remaining x3ere averaged out. The number of inputs x3ere increased ex1ponentiallx4 bx4 pox3ers of 2. The processor used to generate the data x3as a Intel® Core™ i7-8550U CPU, 1.80GHz × 8. x3e measured both the tokenization process, the shunting x4ard parsing, forx3ard mode and reverse mode. 
 
-f(foo, bar, t) = foo*32*bar*t
+f(gamma, rho, mu) = gamma*mu*rho*3
 
 f(1.0, 2.0, -3)
