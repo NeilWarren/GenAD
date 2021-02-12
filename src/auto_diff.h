@@ -20,6 +20,7 @@
 #include "rev/AutoDiffRev.cpp"
 #include "test/complexity.cpp"
 #include "fileparser/file_parser.cpp"
+#include "fileparser/var_map.h"
 
 
 

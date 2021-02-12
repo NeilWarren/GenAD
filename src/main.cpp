@@ -36,10 +36,13 @@ int main() {
 
     
 	std::pair<string, map<std::string, double>> file_output = autodiff_file_reader("example.txt");
-    string input = file_output.first;
-    map<std::string, double> inits = file_output.second;
+	auto vm = var_map(file_output);
 
-   std::vector<Token> token_list = parser(input, inits).token_list;
+    string input = vm.out_func;
+    cout << input << endl;
+    map<std::string, double> inits = vm.out_inits;
+
+    std::vector<Token> token_list = parser(input, inits).token_list;
 
     cout << parser_print(token_list) << endl;
 
