@@ -33,7 +33,7 @@ public:
     const int operators_length = 7;
 
 
-    char variables[10] = {'w', 'x', 'y', 'z', 'k', 'm', 'd', 'v', 'u', 'o'};
+    char variables[10] = {'w', 'x', 'y', 'z', 'k', 'm', 'd', 'v', 'u', '$'};
     const int variables_length = 10;
 
     vector<Token> token_list;

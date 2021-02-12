@@ -28,6 +28,15 @@ std::string parser_print(vector<Token> tokenVec) {
     }
     return output;
 }
+void print_map(map<string, double> m){
+
+    for (auto &it : m){
+        cout << it.first << " " << it.second << endl;
+    }
+
+}
+
+
 
 int main() {
 
@@ -35,11 +44,10 @@ int main() {
 	std::cout << "Hello, World!" << std::endl;
 
     
-	std::pair<string, map<std::string, double>> file_output = autodiff_file_reader("example.txt");
+	std::pair<string, map<std::string, double>> file_output = autodiff_file_reader("../example.txt");
 	auto vm = var_map(file_output);
 
     string input = vm.out_func;
-    cout << input << endl;
     map<std::string, double> inits = vm.out_inits;
 
     std::vector<Token> token_list = parser(input, inits).token_list;

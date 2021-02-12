@@ -20,7 +20,7 @@ std::pair<string, map<std::string, double>> autodiff_file_reader(std::string fil
     infile.open(filename);
     while(!infile.eof()) {// To get you all the lines.
         getline(infile,input); // Saves the line in STRING.
-        std::cout<< input << std::endl; // Prints our STRING.
+        //std::cout<< input << std::endl; // Prints our STRING.
         if (input.find("f(") != std::string::npos && input.find("=") != std::string::npos) {
             std::stringstream test(input);
             
@@ -30,7 +30,8 @@ std::pair<string, map<std::string, double>> autodiff_file_reader(std::string fil
                 seglist.push_back(segment);
             }
 
-            std::cout << seglist[1] << std::endl;
+            //std::cout << seglist[1] << std::endl;
+            seglist[1].erase(remove(seglist[1].begin(), seglist[1].end(), ' '), seglist[1].end());
 
             function = seglist[1];
 
@@ -41,7 +42,7 @@ std::pair<string, map<std::string, double>> autodiff_file_reader(std::string fil
             raw_input_var.erase(remove(raw_input_var.begin(), raw_input_var.end(), 'f'), raw_input_var.end());
             raw_input_var.erase(remove(raw_input_var.begin(), raw_input_var.end(), ' '), raw_input_var.end());
 
-            cout << raw_input_var << std::endl;
+            //cout << raw_input_var << std::endl;
 
             std::stringstream var_stream(raw_input_var);
             while(std::getline(var_stream, segment, ',')) {
@@ -58,7 +59,7 @@ std::pair<string, map<std::string, double>> autodiff_file_reader(std::string fil
             raw_input_var.erase(remove(raw_input_var.begin(), raw_input_var.end(), 'f'), raw_input_var.end());
             raw_input_var.erase(remove(raw_input_var.begin(), raw_input_var.end(), ' '), raw_input_var.end());
 
-            cout << raw_input_var << std::endl;
+            //cout << raw_input_var << std::endl;
 
             std::stringstream var_stream(raw_input_var);
             while(std::getline(var_stream, segment, ',')) {
