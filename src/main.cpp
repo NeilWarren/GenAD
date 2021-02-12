@@ -35,7 +35,7 @@ int main() {
 	std::cout << "Hello, World!" << std::endl;
 
     
-	std::pair<string, map<std::string, double>> file_output = autodiff_file_reader("example.txt");
+	std::pair<string, map<std::string, double>> file_output = autodiff_file_reader("../example.txt");
 	auto vm = var_map(file_output);
 
     string input = vm.out_func;
@@ -60,7 +60,7 @@ int main() {
     Token result2 = ad2.eval();
     cout << result2.num_val << endl;
 
-    for (auto & it2 : result2.derivs) {
+    for (auto & it2 : vm.swap(result2.derivs)) {
         cout << "df/d" << it2.first << " = " << it2.second << endl;
     }
     /*

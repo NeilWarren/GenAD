@@ -28,18 +28,30 @@ public:
                 string new_var = "x";
                 new_var.push_back(n);
                 double orig_val = it.second;
-                vmap.insert({orig_string, new_var});
+                vmap.insert({new_var, orig_string});
                 out_inits.insert({new_var, orig_val });
 
                 int index;
                 while((index = input.find(orig_string)) != string::npos) {
-                    input.replace(index,new_var.length(), new_var);
+                    input.replace(index,orig_string.length(), new_var);
                 }
 
 
             }
         }
         this->out_func = input;
+
+    }
+
+    map<string, double> swap(map<string, double> d){
+        map<string, double> return_d;
+        for (auto &it : d) {
+            string var_n = it.first;
+            string var_o = vmap[var_n];
+            double val = it.second;
+            return_d.insert({ var_o, val});
+        }
+        return return_d;
 
     }
 
