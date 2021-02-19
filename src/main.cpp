@@ -69,7 +69,7 @@ int main() {
     cout << result2.num_val << endl;
 
     for (auto & it2 : vm.swap(result2.derivs)) {
-        cout << "df/d" << it2.first << " = " << it2.second << endl;
+        cout << "df/d_" << it2.first << " = " << it2.second << endl;
     }
     /*
 
