@@ -1,5 +1,7 @@
 ---
-title: 'Mishra-Warren Autodiff - A Generalized-Input Automatic Differentiation Library in C++'
+
+title: "Mishra-Warren Autodiff - A Generalized-Input Automatic Differentiation Library in C++"
+
 tags:
   - automatic differentiation
   - algorithmic differentiation
@@ -10,13 +12,13 @@ authors:
     orcid: 0000-0001-7848-4226
     affiliation: 1
   - name: Aakash Mishra^[Footnote description.]
-    orcid: ####
+    orcid: 
     affiliation: 2
   - name: David Sondak^[Footnote description.]
-    orcid: ###
+    orcid: 
     affiliation: 3
   - name: Andrew Kirby^[Footnote description.]
-    orcid: ####
+    orcid: 
     affiliation: 4
 
 affiliations:
@@ -24,14 +26,13 @@ affiliations:
    index: 1
  - name: Undergraduate Student, Harvard College
    index: 2
-- name: 
+ - name: 
    index: 3
-- name: 
+ - name: 
    index: 4
  
 date: 03 11 2021
 bibliography: paper.bib
-
 ---
 
 # Summary
@@ -44,6 +45,6 @@ Mishra-Warren Autodiff is a C++ library that, first, applies Dijkstra's shunting
 
 # Acknowledgements
 
-Mishra-Warren Autodiff was developed as an extension of a project developed in the course "Systems Development for Computational Science," CS-107, at Harvard University in the Fall of 2020 under the intruction of Dr. David Sondak, Harvard Institute for Applied Computational Science, and Dr. Andrew Kirby, Post-doctoral associate at MIT Lincoln Laboratory. 
+Mishra-Warren Autodiff was developed as an extension of a group project developed in the course "Systems Development for Computational Science," CS-107, at Harvard University in the Fall of 2020 under the intruction of Dr. David Sondak, Harvard Institute for Applied Computational Science, and Dr. Andrew Kirby, Post-doctoral associate at MIT Lincoln Laboratory, and in collaboration with Leo Landau and Samson Negassi. 
 
 # References
