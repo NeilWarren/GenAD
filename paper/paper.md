@@ -1,10 +1,8 @@
 ---
-
-title: 'Mishra-Warren Autodiff - A Generalized-Input Automatic Differentiation Library in C++'
+title: 'Mishra-Warren Autodiff: A Generalized-Input Automatic Differentiation Library in C++'
 tags:
   - automatic differentiation
   - algorithmic differentiation
-  
 authors:
   - name: Neil Warren^[Footnote description.]
     orcid: 0000-0001-7848-4226
@@ -18,7 +16,6 @@ authors:
   - name: Andrew Kirby^[Footnote description.]
     orcid: 
     affiliation: 4
-
 affiliations:
  - name: Master's Student, Harvard University, Extension School
    index: 1
@@ -28,7 +25,6 @@ affiliations:
    index: 3
 - name: 
    index: 4
- 
 date: 03 11 2021
 bibliography: paper.bib
 ---
