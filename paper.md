@@ -51,7 +51,7 @@ Mishra-Warren Autodiff is a C++ library that applies Dijkstra's shunting yard al
 # Features 
 Mishra-Warren Autodiff takes as input functional descriptions and provides as output a complete well-formed Jacobian matrix for the function.  The user may optionally select either forward mode or reverse mode automatic differentiation, the relative advantages and disadvantages of which have discussed at length in the literature. [@DBLP:journals/corr/abs-1811-05031] [@JMLR:v18:17-468]
 
-As shown in \autoref{fig: Parsing }, the Mishra-Warren Autodiff shunting yard pre-processing implementation achieves approximately O(n) time complexity over the number of generated tokens (approximately proportional to the number of elementary functions in the input function).  This was confirmed using a standard laptop with an Intel� CoreT i7-8550U CPU running 100 averaged trials with functions of up to 524,288 elementary operations and independent variables.   Independent of the functional complexity, given that variable names given in text (e.g., "x0" to "x524287") grow in length, parsing for variable names in the tokenizer causes the shape of the curve to become more quadratic as the input size is increases. 
+As shown in \autoref{fig: Parsing }, the Mishra-Warren Autodiff shunting yard pre-processing implementation achieves approximately O(n) time complexity over the number of generated tokens (approximately proportional to the number of elementary functions in the input function).  This was confirmed using a standard laptop with an Intel® Core™ i7-8550U CPU running 100 averaged trials with functions of up to 524,288 elementary operations and independent variables.   Independent of the functional complexity, given that variable names given in text (e.g., “x0” to “x524287”) grow in length, parsing for variable names in the tokenizer causes the shape of the curve to become more quadratic as the input size is increases. 
 
 ![ Parsing tokenization scaling.\label{fig:Parsing}](processing.png)
 
@@ -64,4 +64,5 @@ Given the algorithmic constraints of forward mode automatic differentiation, whi
 Mishra-Warren Autodiff was developed as an extension of a group project developed in the course "Systems Development for Computational Science," CS-107, at Harvard University in the Fall of 2020 under the instruction of Dr. David Sondak, Harvard Institute for Applied Computational Science, and Dr. Andrew Kirby, Post-doctoral associate at MIT Lincoln Laboratory, and in collaboration with Leo Landau and Samson Negassi. 
 
 # References
+
 
