@@ -2,10 +2,10 @@
 affiliations: 
   - 
     index: 1
-    name: "Master's Student, Harvard University, Extension School"
+    name: "Software Engineering Master's Degree Candidate, Harvard University, Extension School"
   - 
     index: 2
-    name: "Undergraduate Student, Harvard College"
+    name: "Computer Science Major, Harvard College"
   - 
     index: 3
     name: ~
@@ -34,20 +34,34 @@ date: "03 11 2021"
 tags: 
   - "automatic differentiation"
   - "algorithmic differentiation"
-title: "Mishra-Warren Autodiff"
+title: "Mishra-Warren Autodiff: A Generalized Input Automatic Differentiation library in C++"
 
 ---
 
 # Summary
 
-In many modern scientific applications, from mathematical optimization to training neural networks, the need to efficiently compute derivatives is ubiquitous. Given the drawbacks using computer algebra systems to perform symbolic differentiation, which can become intractable for complex functions, automatic differentiation has become the preferred method of computing such derivatives. Several popular OSS machine learning libraries include automatic differentiation functionality: Pytorch [@paszke2017automatic], [@pytorch]; Tensorflow [@TFAutodiff].  While extensible, these libraries are limited in the scope of the input that they can process.  In particular, these libraries perform automatic differentiation on internal data types specific to the library, and therefore prescribe input be defined in the Python (or other) programming language by instantiation of these data types. Allowing input in a more general form, such as from scientific documents and text strings, allows for automation of what would otherwise be the manual task of inputting functions via source code declaration. 
- 
+In many modern machine learning applications, from mathematical optimization to the training of neural networks, the need to efficiently compute complex derivatives of functions of tens or even thousands of variables have become ubiquitous.  [@JMLR:v18:17-468]  Given the computational drawbacks of using computer algebra systems to perform symbolic differentiation of complex functions of many variables, automatic differentiation has become the preferred method of derivative computation.  Notably, several popular open source machine learning libraries include automatic differentiation functionality: Pytorch [@paszke2017automatic], [@pytorch]; Tensorflow [@TFAutodiff].  While powerful and extensible, these libraries are limited in the scope and form of the input that they can accept.  In particular, these libraries accept inputs and perform automatic differentiation on specific programmatic data structures specific to the library, which must be defined in source code written in Python or other programming languages.  This makes function definition and data input a largely manual process.  Allowing input in a more general form, such as from scientific documents and text strings, allows for the automation of automatic differentiation.  This is particularly useful for large functions of tens or even thousands of variables, for example, as provided by output in text form from documents or as output from libraries written in other languages with incompatible data types. 
+
 # Statement of need
 
-Mishra-Warren Autodiff is a C++ library that, first, applies Dijkstra's shunting yard algorithm to pre-process textual function inputs along with point vectors and derivative seed vectors, and then applies forward and reverse mode automatic differentiation algorithms to develop a well-formed Jacobian matrix. In contrast, most existing popular automatic differentiation libraries take functional input in the form of a computer program's source code (often Python) utilizing specialized data structures and previously declared variables and constants. [@TFAutodiff] This makes the process of applying automatic differentiation to functions from textual sources a manual task. Mishra-Warren Autodiff accepts raw textual input, e.g., "f(x0,y0) = x0 * cos(y0)," from the command line or a text file, such as a scientific document. 
+In many applications, scientists may use a software library that lacks built-in efficient automatic differentiation functionality to generate complex function with many variables and need to efficiently calculate the derivative or a series of derivatives of the function.  For large functions of tens or even thousands of variables the data input process for providing that function to a standard machine learning library such as Pytorch or Tensorflow would be exceedingly time consuming and prone to error.  Thus, there is a need for an automatic differentiation library that can read in the function to be evaluated in a generalized form, such as a raw text, that can be easily read out to a file by a software library or provided in a scientific document. 
+
+Mishra-Warren Autodiff is a C++ library that applies Dijkstra's shunting yard algorithm [@boysen2012shunting] to pre-process textual function inputs along with point vectors and derivative seed vectors, and then applies forward and reverse mode automatic differentiation algorithms to develop a well-formed Jacobian matrix. In contrast, most existing popular automatic differentiation libraries take functional input in the form of a computer program's source code (often Python) utilizing specialized data structures and previously declared variables and constants. [@TFAutodiff] This makes the process of applying automatic differentiation to functions from textual sources a manual task. Mishra-Warren Autodiff accepts raw textual input, e.g., "f(x0,y0) = x0 * cos(y0)," from the command line or a text file, such as a scientific document. 
+
+# Features 
+Mishra-Warren Autodiff takes as input functional descriptions and provides as output a complete well-formed Jacobian matrix for the function.  The user may optionally select either forward mode or reverse mode automatic differentiation, the relative advantages and disadvantages of which have discussed at length in the literature. [@DBLP:journals/corr/abs-1811-05031] [@JMLR:v18:17-468]
+
+As shown in \autoref{fig: Parsing }, the Mishra-Warren Autodiff shunting yard pre-processing implementation achieves approximately O(n) time complexity over the number of generated tokens (approximately proportional to the number of elementary functions in the input function).  This was confirmed using a standard laptop with an Intel® CoreT i7-8550U CPU running 100 averaged trials with functions of up to 524,288 elementary operations and independent variables.   Independent of the functional complexity, given that variable names given in text (e.g., "x0" to "x524287") grow in length, parsing for variable names in the tokenizer causes the shape of the curve to become more quadratic as the input size is increases. 
+
+![ Parsing tokenization scaling.\label{fig:Parsing}](processing.png)
+
+Given the algorithmic constraints of forward mode automatic differentiation, which computes partial derivatives for each independent variable at each computational node, reverse mode provides for more efficient computation of derivatives for functions with a large numbers of independent variables.  Reverse mode, in contrast, requires the computation of an adjoint tree from a first pass through the function tokens, which adds a small amount of computational overhead and thus is not optimal for functions of on a few variables.  An exemplary description of computational time complexity for the parsing and evaluation of the Jacobian for functions of 1 to $2^{18}$ variables is provided below. 
+
+![ Forward vs. Reverse Mode.\label{fig:fwdrev }](fwd_vs_rev.png)
 
 # Acknowledgements
 
-Mishra-Warren Autodiff was developed as an extension of a group project developed in the course "Systems Development for Computational Science," CS-107, at Harvard University in the Fall of 2020 under the intruction of Dr. David Sondak, Harvard Institute for Applied Computational Science, and Dr. Andrew Kirby, Post-doctoral associate at MIT Lincoln Laboratory, and in collaboration with Leo Landau and Samson Negassi. 
+Mishra-Warren Autodiff was developed as an extension of a group project developed in the course "Systems Development for Computational Science," CS-107, at Harvard University in the Fall of 2020 under the instruction of Dr. David Sondak, Harvard Institute for Applied Computational Science, and Dr. Andrew Kirby, Post-doctoral associate at MIT Lincoln Laboratory, and in collaboration with Leo Landau and Samson Negassi. 
 
 # References
+
