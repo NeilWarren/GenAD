@@ -8,10 +8,10 @@ affiliations:
     name: "Computer Science Major, Harvard College"
   - 
     index: 3
-    name: ~
+    name: "Lecturer on Computational Science, Harvard Institute for Applied Computational Science"
   - 
     index: 4
-    name: ~
+    name: "Post-Doctoral Associate, MIT Lincoln Laboratory"
 authors: 
   - 
     affiliation: 1
@@ -40,7 +40,9 @@ title: "Mishra-Warren Autodiff: A Generalized Input Automatic Differentiation li
 
 # Summary
 
-In many modern machine learning applications, from mathematical optimization to the training of neural networks, the need to efficiently compute complex derivatives of functions of tens or even thousands of variables have become ubiquitous.  [@JMLR:v18:17-468]  Given the computational drawbacks of using computer algebra systems to perform symbolic differentiation of complex functions of many variables, automatic differentiation has become the preferred method of derivative computation.  Notably, several popular open source machine learning libraries include automatic differentiation functionality: Pytorch [@paszke2017automatic], [@pytorch]; Tensorflow [@TFAutodiff].  While powerful and extensible, these libraries are limited in the scope and form of the input that they can accept.  In particular, these libraries accept inputs and perform automatic differentiation on specific programmatic data structures specific to the library, which must be defined in source code written in Python or other programming languages.  This makes function definition and data input a largely manual process.  Allowing input in a more general form, such as from scientific documents and text strings, allows for the automation of automatic differentiation.  This is particularly useful for large functions of tens or even thousands of variables, for example, as provided by output in text form from documents or as output from libraries written in other languages with incompatible data types. 
+From mathematical optimization to the training of neural networks, the need to efficiently compute  derivatives of complex functions of tens or even thousands of variables and operations have become ubiquitous in the field of machine learning.  [@JMLR:v18:17-468]  Given the computational drawbacks of performing symbolic differentiation of complex functions, which quickly become intractable for even the most sophisticated computer algebra systems, automatic differentiation has become the preferred method of derivative computation.  Notably, several popular open source machine learning libraries include automatic differentiation functionality: Pytorch [@paszke2017automatic], [@pytorch]; Tensorflow [@TFAutodiff].  While powerful and extensible, these libraries are limited in the scope and form of the input that they can accept.  In particular, users of these libraries use computer source code (often Python) to input the function to be differentiated or write source code to derive the internal representation of the functions.  For functions derived outside of the Python environment, or from an otherwise accessible computational environment, function definition and data input is a largely manual process.  
+
+The Mishra-Warren Autodiff library utilizes forms of generalized input (i.e., non-specific to the computational environment), such as scientific documents and text strings. Accepting more generalized forms of input allows for the efficient automation of automatic differentiation for functions derived in varied computational environments.  This is particularly useful for large functions of tens or even thousands of variables, for example, as provided by output in text form from documents or as output from libraries written in other languages with incompatible data types. 
 
 # Statement of need
 
@@ -64,5 +66,6 @@ Given the algorithmic constraints of forward mode automatic differentiation, whi
 Mishra-Warren Autodiff was developed as an extension of a group project developed in the course "Systems Development for Computational Science," CS-107, at Harvard University in the Fall of 2020 under the instruction of Dr. David Sondak, Harvard Institute for Applied Computational Science, and Dr. Andrew Kirby, Post-doctoral associate at MIT Lincoln Laboratory, and in collaboration with Leo Landau and Samson Negassi. 
 
 # References
+
 
 
