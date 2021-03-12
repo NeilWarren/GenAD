@@ -30,9 +30,32 @@ affiliations:
    index: 3
  - name: 
    index: 4
- 
+
+references:
+- id: TFAutodiff
+  title: Introduction to Gradients and Automatic Differentiation
+  author: TensorFlow
+  container-title: TensorFlow.org
+  URL: 'https://www.tensorflow.org/guide/autodiff [Accessed: 03/11/2020]'
+  type: misc
+  year: 2021
+- id: pytorch
+  title: A GENTLE INTRODUCTION TO TORCH.AUTOGRAD
+  author: PyTorch
+  container-title: PyTorch.org
+  URL: 'https://pytorch.org/tutorials/beginner/blitz/autograd_tutorial.html [Accessed: 03/11/2020]"
+  type: misc
+  year: 2021
+- id: paszke2017automatic
+  title: Automatic differentiation in PyTorch
+  author: Paszke, Adam and Gross, Sam and Chintala, Soumith and Chanan, Gregory and Yang, Edward and DeVito, Zachary and Lin, Zeming and Desmaison, Alban and Antiga, Luca and Lerer, Adam
+  container-title: Nature Materials
+  type: article
+  issued:
+    year: 2017
+   
 date: 03 11 2021
-bibliography: paper/paper.bib
+
 ---
 
 # Summary
