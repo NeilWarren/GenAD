@@ -32,7 +32,7 @@ affiliations:
    index: 4
  
 date: 03 11 2021
-bibliography: paper.bib
+bibliography: paper/paper.bib
 ---
 
 # Summary
