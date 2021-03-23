@@ -16,6 +16,7 @@ addons:
 
 before_script:
   - cd third_party
+  - chmod +x build_third_party.sh
   - ./build_third_party.sh
   - cd ../
 
