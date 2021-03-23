@@ -6,6 +6,8 @@ notifications:
   
 addons:
   apt:
+    packages:
+      - doxygen
     sources:
       - ubuntu-toolchain-r-test
       - llvm-toolchain-trusty-5.0
@@ -13,6 +15,7 @@ addons:
       - g++-6
       - clang-5.0
       - lcov
+
 
 before_script:
   - cd third_party
@@ -29,9 +32,19 @@ script:
   - make 
   - ./GenADTests
   - cd ../../
+  - cd docs
+  - doxygen Doxyfile
+  - cd ../
 
 after_success:
   - cd test 
   - bash coverage.sh
   - bash <(curl -s https://codecov.io/bash) -f ./coverage/GenAD_COV.info -t b00950b0-7c9d-4223-8da6-41ad4721aa11 || echo "Codecov did not collect coverage reports"
 
+deploy:
+  provider: pages
+  skip_cleanup: true
+  local_dir: docs/html
+  github_token: $GH_REPO_TOKEN
+  on:
+    branch: master
