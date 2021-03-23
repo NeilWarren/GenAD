@@ -1,0 +1,36 @@
+dist: trusty
+sudo: false
+language: cpp
+
+notifications:
+  
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+      - llvm-toolchain-trusty-5.0
+    packages:
+      - g++-6
+      - clang-5.0
+      - lcov
+
+before_script:
+  - cd third_party
+  - ./build_third_party.sh
+  - cd ../
+
+script:
+  - cd test
+  - rm -rf build
+  - mkdir build
+  - cd build
+  - CXX=/usr/bin/g++-6 CC=/usr/bin/gcc-6 cmake -DCOVERAGE=1 ..
+  - make 
+  - ./GenADTests
+  - cd ../../
+
+after_success:
+  - cd test 
+  - bash coverage.sh
+  - bash <(curl -s https://codecov.io/bash) -f ./coverage/GenAD_COV.info -t b00950b0-7c9d-4223-8da6-41ad4721aa11 || echo "Codecov did not collect coverage reports"
+
