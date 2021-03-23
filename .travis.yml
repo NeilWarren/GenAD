@@ -31,14 +31,7 @@ script:
   - make 
   - ./GenADTests
   - cd ../../
-  - cd docs
   - doxygen Doxyfile
-  - cd ../
-
-after_success:
-  - cd test 
-  - bash coverage.sh
-  - bash <(curl -s https://codecov.io/bash) -f ./coverage/GenAD_COV.info -t b00950b0-7c9d-4223-8da6-41ad4721aa11 || echo "Codecov did not collect coverage reports"
 
 deploy:
   provider: pages
@@ -47,3 +40,9 @@ deploy:
   github_token: $GH_REPO_TOKEN
   on:
     branch: main
+
+after_success:
+  - cd test 
+  - bash coverage.sh
+  - bash <(curl -s https://codecov.io/bash) -f ./coverage/GenAD_COV.info -t b00950b0-7c9d-4223-8da6-41ad4721aa11 || echo "Codecov did not collect coverage reports"
+
