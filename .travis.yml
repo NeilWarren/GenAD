@@ -6,8 +6,6 @@ notifications:
   
 addons:
   apt:
-    packages:
-      - doxygen
     sources:
       - ubuntu-toolchain-r-test
       - llvm-toolchain-trusty-5.0
@@ -15,6 +13,7 @@ addons:
       - g++-6
       - clang-5.0
       - lcov
+      - doxygen
 
 
 before_script:
