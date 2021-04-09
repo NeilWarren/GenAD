@@ -2,7 +2,7 @@
 affiliations: 
   - 
     index: 1
-    name: "Harvard University, Dept. of Continuing Education"
+    name: "Harvard University, Division of Continuing Education"
   - 
     index: 2
     name: "Harvard University, Dept. of Computer Science"
