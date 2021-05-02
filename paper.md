@@ -40,13 +40,36 @@ title: "GenAD: A Generalized Input Automatic Differentiation Library in C++"
 
 # Summary
 
-From mathematical optimization to the training of neural networks, the need to efficiently compute  derivatives of complex functions of tens or even thousands of variables and operations has become ubiquitous in the field of machine learning.  [@JMLR:v18:17-468]  Given the computational drawbacks of performing symbolic differentiation, which quickly becomes intractable with moderate functional complexity for even the most sophisticated computer algebra systems, automatic differentiation has become the preferred method of derivative computation.  Notably, several popular open source machine learning libraries include automatic differentiation functionality: Pytorch [@paszke2017automatic], [@pytorch]; Tensorflow [@TFAutodiff].  While powerful and extensible, these libraries are limited in the scope and form of the input that they can accept.  In particular, users of these libraries use computer source code (often Python) to input the function to be differentiated or write source code to derive the internal representation of the functions.  For functions derived outside of the Python environment, or from an otherwise inaccessible computational environment, function definition and data input is a largely manual process.  
+From mathematical optimization to the training of neural networks, the need to efficiently compute derivatives of complex
+functions of tens or even thousands of variables and operations has become ubiquitous in scientific computing
+[**reference!**] and scientific machine learning [@JMLR:v18:17-468]. Given the computational drawbacks of performing symbolic
+differentiation, which quickly becomes intractable with moderate functional complexity [**reference to computational
+complexity of symbolic differentiation**] for even the most sophisticated computer algebra systems[**cite some of the
+systems**], automatic differentiation has emerged as a powerful method to compute derivatives. The emerging field of
+differential programming [**references**] provides substantial support for writing differential scientific programs. Indeed,
+modern programming languages, such as the Julia Programming Language [**cite!**], natively support automatic differentiation.
+In the machine learning community, several popular open source libraries include automatic differentiation functionality
+including Pytorch [@paszke2017automatic], [@pytorch] and Tensorflow [@TFAutodiff]. While powerful and extensible, these
+libraries are limited in the scope and form of the input that they can accept. In particular, users of these libraries use
+computer source code (often Python) to input the function to be differentiated or write source code to derive the internal
+representation of the functions. For functions derived outside of the Python environment, or from an otherwise inaccessible
+computational environment, function definition and data input is a largely manual process.  
 
-The GenAD library utilizes forms of generalized input (i.e., non-specific to the computational environment), such as scientific documents and text strings. Accepting more generalized forms of input allows for the efficient automation of automatic differentiation for functions derived in varied computational environments.  This is particularly useful for large functions of tens or even thousands of variables, for example, as provided by output in text form from documents or as output from libraries written in other languages with incompatible data types. 
+The GenAD library presented in this work utilizes forms of generalized input (e.g., non-specific to the computational
+environment), such as scientific documents and text strings. Accepting more generalized forms of input allows for the
+efficient automation of automatic differentiation for functions derived in varied computational environments. This is
+particularly useful for large functions of tens or even thousands of variables, for example, as provided by output in text
+form from documents or as output from libraries written in other languages with incompatible data types. 
 
 # Statement of need
 
-In many applications, scientists may use a software library that lacks built-in efficient automatic differentiation functionality to a generate complex function with many variables and need to efficiently calculate the derivative or a series of derivatives of the function.  For large functions of tens or even thousands of variables, the data input process for providing that function to a standard machine learning library such as Pytorch or Tensorflow can be exceedingly time consuming and prone to error.  Thus, there is a need for an automatic differentiation library that can read in the function to be evaluated in a generalized form, such as a raw text, that can be easily written out to a file by an external software library. 
+In many applications, scientists may use a software library that lacks built-in efficient automatic differentiation
+functionality to a generate complex function with many variables and need to efficiently calculate the derivative or a series
+of derivatives of the function.  For large functions of tens or even thousands of variables, the data input process for
+providing that function to a standard machine learning library such as Pytorch or Tensorflow can be exceedingly time
+consuming and prone to error.  Thus, there is a need for an automatic differentiation library that can read in the function
+to be evaluated in a generalized form, such as a raw text, that can be easily written out to a file by an external software
+library. 
 
 GenAD is a C++ library that applies Dijkstra's shunting yard algorithm [@boysen2012shunting] to pre-process textual function inputs along with point vectors and derivative seed vectors, and then applies forward and reverse mode automatic differentiation algorithms to develop a well-formed Jacobian matrix. In contrast, most existing popular automatic differentiation libraries take functional input in the form of a computer program's source code (often Python) utilizing specialized data structures and previously declared variables and constants. [@TFAutodiff] This makes the process of applying automatic differentiation to functions from textual sources a manual task. GenAD accepts raw textual input, e.g., "f(x0,y0) = x0 * cos(y0)," from the command line or a text file, such as a scientific document. 
 
