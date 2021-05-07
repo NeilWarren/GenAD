@@ -11,7 +11,7 @@ affiliations:
     name: "Harvard University, Institute for Applied Computational Science"
   - 
     index: 4
-    name: "Need to add this"
+    name: "Scientific Simulations, LLC."
 authors: 
   - 
     affiliation: 1
@@ -40,25 +40,25 @@ title: "GenAD: A Generalized Input Automatic Differentiation Library in C++"
 
 # Summary
 
-From mathematical optimization to the training of neural networks, the need to efficiently compute derivatives of complex
-functions of tens or even thousands of variables and operations has become ubiquitous in scientific computing
+From mathematical optimization to neural network training, the need to efficiently compute derivatives of
+functions containing tens or even thousands of variables and operations has become ubiquitous in scientific computing
 [**reference!**] and scientific machine learning [@JMLR:v18:17-468]. Given the computational drawbacks of performing symbolic
-differentiation, which quickly becomes intractable with moderate functional complexity [**reference to computational
+differentiation, which quickly becomes intractable under moderate functional complexity [**reference to computational
 complexity of symbolic differentiation**] for even the most sophisticated computer algebra systems[**cite some of the
 systems**], automatic differentiation has emerged as a powerful method to compute derivatives. The emerging field of
 differential programming [**references**] provides substantial support for writing differential scientific programs. Indeed,
 modern programming languages, such as the Julia Programming Language [**cite!**], natively support automatic differentiation.
-In the machine learning community, several popular open source libraries include automatic differentiation functionality
+Within the machine learning community, several popular open source libraries include automatic differentiation functionality
 including Pytorch [@paszke2017automatic], [@pytorch] and Tensorflow [@TFAutodiff]. While powerful and extensible, these
-libraries are limited in the scope and form of the input that they can accept. In particular, users of these libraries use
+libraries are limited in the scope and form of the input that they can accept. In particular, users of these libraries leverage
 computer source code (often Python) to input the function to be differentiated or write source code to derive the internal
-representation of the functions. For functions derived outside of the Python environment, or from an otherwise inaccessible
-computational environment, function definition and data input is a largely manual process.  
+representation of the functions. For functions derived outside of the computational environment, definition and data input 
+is a largely manual process.  
 
 The GenAD library presented in this work utilizes forms of generalized input (e.g., non-specific to the computational
-environment), such as scientific documents and text strings. Accepting more generalized forms of input allows for the
+environment), such as scientific documents and text strings. Acceptance of more generalized forms of input allows for the
 efficient automation of automatic differentiation for functions derived in varied computational environments. This is
-particularly useful for large functions of tens or even thousands of variables, for example, as provided by output in text
+particularly useful for large functions of tens or thousands of variables, for example, as provided by output in text
 form from documents or as output from libraries written in other languages with incompatible data types. 
 
 # Statement of need
@@ -83,7 +83,7 @@ a scientific document.
 
 # Features 
 
-GenAD takes as input functional descriptions and provides as output a complete well-formed Jacobian matrix. The user may
+GenAD utilizes functional descriptions as input and provides a complete well-formed Jacobian matrix as output. The user may
 optionally select either forward mode or reverse mode automatic differentiation, the relative advantages and disadvantages of
 which have been discussed at length in the literature [@DBLP:journals/corr/abs-1811-05031] [@JMLR:v18:17-468].
 
@@ -91,8 +91,8 @@ As shown in \autoref{fig:Parsing}, the GenAD shunting yard pre-processing implem
 complexity over the number of generated tokens (approximately proportional to the number of elementary functions in the input
 function). This was confirmed using a standard laptop with an Intel® Core™ i7-8550U CPU running 100 averaged trials with
 functions of up to 524,288 elementary operations and independent variables. Independent of the functional complexity, given
-that variable names given in text (e.g., “x0,” "x1," ... “x524287”) grow in length, parsing for variable names in the
-tokenizer causes the shape of the curve to become more quadratic as the input size is increases. 
+that variable names given in text (e.g., “x0,” "x1," ... “x524287”) grow in length, parsing text for variable names in the
+tokenizer causes the shape of the curve to become more quadratic as the input size increases. 
 
 ![ Parsing tokenization scaling.\label{fig:Parsing}](processing.png)
 
@@ -109,7 +109,7 @@ evaluation of the Jacobian for functions of 1 to $2^{18}$ variables.
 
 GenAD was developed as an extension of a group project developed in the course "Systems Development for Computational
 Science," CS-107, at Harvard University in the Fall of 2020 under the instruction of Dr. David Sondak, Harvard Institute for
-Applied Computational Science, and Dr. Andrew Kirby, Post-doctoral associate at MIT Lincoln Laboratory, and in collaboration
+Applied Computational Science, and Dr. Andrew Kirby, Research Scientist at Scientific Simulations, LLC., and in collaboration
 with Leo Landau and Samson Negassi. 
 
 # References
